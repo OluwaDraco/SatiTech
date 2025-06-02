@@ -3,13 +3,17 @@ generator client {
   output   = "../generated/prisma"
 }
 
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Clients {
-  id             String    @id 
+  id             String   @id
   company_name   String?
   country        String?
   total_spent    Decimal? @db.Decimal
@@ -28,12 +32,12 @@ model Jobs {
   budget      Decimal?  @db.Decimal
   duration    String?
   workload    String?
-  user_id     String?
   client_id   String?
   created_at  DateTime? @db.Timestamp(6)
   rate        Decimal?  @db.Money
+  user_id     String?
   clients     Clients?  @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users       Users?   @relation("UserJobs", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       Users?    @relation("UserJobs", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("jobs")
 }
@@ -44,13 +48,8 @@ model sati_users {
   password String?
 }
 
-model test {
-  id        String  @id
-  full_name String?
-}
-
 model Users {
-  id          String @default(uuid())
+  id          String   @id(map: "freelancers_pkey") @default(uuid())
   full_name   String?
   title       String?
   rate        Decimal? @db.Decimal
@@ -58,12 +57,11 @@ model Users {
   skills      String[]
   overview    String?
   admin       Boolean? @default(false)
-  email       String? @unique
+  email       String?  @unique
   profile_url String?
   reviews     String[]
   password    String?
-  jobs        Jobs[]   @relation("UserJobs") 
+  jobs        Jobs[]   @relation("UserJobs")
 
   @@map("users")
-  @@id([id], map: "freelancers_pkey")
 }

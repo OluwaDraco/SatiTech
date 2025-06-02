@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+  // Match client output location from above
+}
+
+model Clients {
+  id             String   @id
+  company_name   String?
+  country        String?
+  total_spent    Decimal? @db.Decimal
+  feedback_score Decimal? @db.Decimal
+  jobs           Jobs[]
+
+  @@map("client")
+}
+
+model Jobs {
+  id          String    @id
+  title       String?
+  description String?
+  skills      String[]
+  job_type    String?
+  budget      Decimal?  @db.Decimal
+  duration    String?
+  workload    String?
+  user_id     String?
+  client_id   String?
+  created_at  DateTime? @db.Timestamp(6)
+  rate        Decimal?  @db.Money
+  clients     Clients?  @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       Users?    @relation("UserJobs", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("jobs")
+}
+
+model sati_users {
+  id       String  @id
+  email    String?
+  password String?
+}
+
+model Users {
+  id          String   @default(uuid())
+  full_name   String?
+  title       String?
+  rate        Decimal? @db.Decimal
+  location    String?
+  skills      String[]
+  overview    String?
+  admin       Boolean? @default(false)
+  email       String?  @unique
+  profile_url String?
+  reviews     String[]
+  password    String?
+  jobs        Jobs[]   @relation("UserJobs")
+
+  @@id([id], map: "freelancers_pkey")
+  @@map("users")
+}
