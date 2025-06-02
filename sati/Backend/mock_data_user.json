@@ -1,0 +1,13 @@
+{
+    "id": "user_1",
+    "full_name": "Sophia Ramirez",
+    "title": "Full-Stack Developer",
+    "rate": 45,
+    "location": "New York, USA",
+    "skills": ["JavaScript", "React", "Node.js", "TypeScript"],
+    "overview": "Experienced full-stack developer building scalable web applications.",
+    "admin": false,
+    "email": "sophia.ramirez@example.com",
+    "profile_url": "https://example.com/profiles/sophia",
+    "reviews": ["Excellent work!", "Very reliable and skilled developer."]
+}

@@ -1,0 +1,78 @@
+[
+    {
+        "id": "user_1",
+        "full_name": "Sophia Ramirez",
+        "title": "Full-Stack Developer",
+        "rate": 45,
+        "location": "New York, USA",
+        "skills": ["JavaScript", "React", "Node.js", "TypeScript"],
+        "overview": "Experienced full-stack developer building scalable web applications.",
+        "admin": false,
+        "email": "sophia.ramirez@example.com",
+        "profile_url": "https://example.com/profiles/sophia",
+        "reviews": ["Excellent work!", "Very reliable and skilled developer."]
+    },
+    {
+        "id": "user_2",
+        "full_name": "Liam Chen",
+        "title": "UI/UX Designer",
+        "rate": 50,
+        "location": "Toronto, Canada",
+        "skills": ["Figma", "Adobe XD", "Sketch", "User Research"],
+        "overview": "Creative UI/UX designer passionate about user-centered design.",
+        "admin": false,
+        "email": "liam.chen@example.com",
+        "profile_url": "https://example.com/profiles/liam",
+        "reviews": ["Great designs!", "Understood the project perfectly."]
+    },
+    {
+        "id": "user_3",
+        "full_name": "Ava Patel",
+        "title": "Digital Marketing Specialist",
+        "rate": 40,
+        "location": "London, UK",
+        "skills": ["SEO", "Google Ads", "Content Marketing", "Analytics"],
+        "overview": "Marketing expert focused on driving growth and engagement.",
+        "admin": true,
+        "email": "ava.patel@example.com",
+        "profile_url": "https://example.com/profiles/ava",
+        "reviews": [
+            "Outstanding marketing strategies!",
+            "Boosted our online presence."
+        ]
+    },
+    {
+        "id": "user_4",
+        "full_name": "Ethan Johnson",
+        "title": "Mobile App Developer",
+        "rate": 55,
+        "location": "Austin, USA",
+        "skills": ["Flutter", "React Native", "iOS", "Android"],
+        "overview": "Mobile developer crafting beautiful and efficient apps.",
+        "admin": false,
+        "email": "ethan.johnson@example.com",
+        "profile_url": "https://example.com/profiles/ethan",
+        "reviews": [
+            "App was delivered ahead of schedule.",
+            "Excellent Flutter skills!"
+        ]
+    },
+    {
+        "id": "user_5",
+        "full_name": "Mia Nguyen",
+        "title": "Content Writer",
+        "rate": 35,
+        "location": "Sydney, Australia",
+        "skills": [
+            "Copywriting",
+            "Technical Writing",
+            "SEO Writing",
+            "Blogging"
+        ],
+        "overview": "Tech-savvy writer with a passion for storytelling.",
+        "admin": false,
+        "email": "mia.nguyen@example.com",
+        "profile_url": "https://example.com/profiles/mia",
+        "reviews": ["Fantastic writing skills!", "Articles were very engaging."]
+    }
+]
