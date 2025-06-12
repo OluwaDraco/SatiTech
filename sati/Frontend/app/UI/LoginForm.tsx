@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { loginSchema } from "../../schema/formSchema";
+import { loginSchema } from "../../api/zodSchema";
 import { z } from "zod";
+import { UserByEmail } from "../../api/graphql/queries";
 //UI components
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
@@ -19,6 +21,7 @@ import {
 import { Input } from "../../components/ui/input";
 
 const LoginForm = () => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -27,11 +30,20 @@ const LoginForm = () => {
         },
     });
 
-    const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+        console.log("click");
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values);
+        const result = await UserByEmail(values.email, values.password);
+        console.log(result);
+        if (!result || !result.userFound) {
+            setErrorMessage("Invalid email or password.");
+            return;
+        }
+
+        setErrorMessage(null);
     };
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -48,8 +60,9 @@ const LoginForm = () => {
                                     className="focus:text-white"
                                 />
                             </FormControl>
-
-                            <FormMessage />
+                            {errorMessage && (
+                                <FormMessage>{errorMessage}</FormMessage>
+                            )}
                         </FormItem>
                     )}
                 />
@@ -67,7 +80,9 @@ const LoginForm = () => {
                                 />
                             </FormControl>
 
-                            <FormMessage />
+                            {errorMessage && (
+                                <FormMessage>{errorMessage}</FormMessage>
+                            )}
                         </FormItem>
                     )}
                 />{" "}

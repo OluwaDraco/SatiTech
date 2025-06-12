@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import {
     BellIcon,
     CreditCardIcon,
@@ -98,10 +98,7 @@ export function NavUser({
                                 <UserCircleIcon />
                                 Account
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <CreditCardIcon />
-                                Billing
-                            </DropdownMenuItem>
+
                             <DropdownMenuItem>
                                 <BellIcon />
                                 Notifications
