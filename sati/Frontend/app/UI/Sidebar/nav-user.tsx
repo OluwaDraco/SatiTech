@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import {
     BellIcon,
     CreditCardIcon,
@@ -24,6 +24,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar";
+import { logOut } from "@/app/api/graphql/queries";
 
 export function NavUser({
     user,
@@ -35,6 +36,10 @@ export function NavUser({
     };
 }) {
     const { isMobile } = useSidebar();
+
+    const handleClick = () => {
+        logOut();
+    };
 
     return (
         <SidebarMenu>
@@ -98,17 +103,14 @@ export function NavUser({
                                 <UserCircleIcon />
                                 Account
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <CreditCardIcon />
-                                Billing
-                            </DropdownMenuItem>
+
                             <DropdownMenuItem>
                                 <BellIcon />
                                 Notifications
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleClick}>
                             <LogOutIcon />
                             Log out
                         </DropdownMenuItem>

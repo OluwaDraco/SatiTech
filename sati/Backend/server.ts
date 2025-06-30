@@ -38,8 +38,6 @@ const yoga = createYoga({
 const server = createServer(yoga);
 
 server.listen(4000, () => {
-    console.log("DATABASE_URL:", process.env.DATABASE_URL);
-
     console.log(`\
 🚀 Server ready at: http://127.0.0.1:4000
 ⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api

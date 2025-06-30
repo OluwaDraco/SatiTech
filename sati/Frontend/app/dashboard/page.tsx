@@ -1,7 +1,7 @@
 import React from "react";
 import CardSection from "../UI/Dashboard/Card-Section";
 import DataCard from "../UI/Dashboard/DataCard";
-const testPage = () => {
+const JobListingsPage = () => {
     return (
         <div className="flex flex-1 flex-col">
             <div className="@container/main flex flex-1 flex-col gap-2">
@@ -18,4 +18,4 @@ const testPage = () => {
         </div>
     );
 };
-export default testPage;
+export default JobListingsPage;

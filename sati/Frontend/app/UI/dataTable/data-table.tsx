@@ -329,12 +329,31 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
     );
 }
 
+// Define the raw data type (before Zod transformation)
+type RawDataType = {
+    id: number;
+    header: string;
+    type: string;
+    status: string;
+    priority: string;
+    reviewer: string;
+    due: string;
+};
+
 export function DataTable({
     data: initialData,
 }: {
-    data: z.infer<typeof schema>[];
+    data: RawDataType[];
 }) {
-    const [data, setData] = React.useState(() => initialData);
+    // Transform the raw data to match the schema
+    const transformedData = React.useMemo(() => 
+        initialData.map(item => ({
+            ...item,
+            due: new Date(item.due)
+        }))
+    , [initialData]);
+    
+    const [data, setData] = React.useState(() => transformedData);
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({});
