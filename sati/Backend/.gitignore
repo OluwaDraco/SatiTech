@@ -1,3 +1,10 @@
 node_modules
 # Keep environment variables out of version control
 .env
+# RSA keys for JWT
+private_key.pem
+public_key.pem
+# Generated files
+generated/
+# Logs
+*.log

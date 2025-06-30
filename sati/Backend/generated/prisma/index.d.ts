@@ -2341,10 +2341,10 @@ export namespace Prisma {
     budget: Decimal | null
     duration: string | null
     workload: string | null
-    user_id: string | null
     client_id: string | null
     created_at: Date | null
     rate: Decimal | null
+    user_id: string | null
   }
 
   export type JobsMaxAggregateOutputType = {
@@ -2355,10 +2355,10 @@ export namespace Prisma {
     budget: Decimal | null
     duration: string | null
     workload: string | null
-    user_id: string | null
     client_id: string | null
     created_at: Date | null
     rate: Decimal | null
+    user_id: string | null
   }
 
   export type JobsCountAggregateOutputType = {
@@ -2370,10 +2370,10 @@ export namespace Prisma {
     budget: number
     duration: number
     workload: number
-    user_id: number
     client_id: number
     created_at: number
     rate: number
+    user_id: number
     _all: number
   }
 
@@ -2396,10 +2396,10 @@ export namespace Prisma {
     budget?: true
     duration?: true
     workload?: true
-    user_id?: true
     client_id?: true
     created_at?: true
     rate?: true
+    user_id?: true
   }
 
   export type JobsMaxAggregateInputType = {
@@ -2410,10 +2410,10 @@ export namespace Prisma {
     budget?: true
     duration?: true
     workload?: true
-    user_id?: true
     client_id?: true
     created_at?: true
     rate?: true
+    user_id?: true
   }
 
   export type JobsCountAggregateInputType = {
@@ -2425,10 +2425,10 @@ export namespace Prisma {
     budget?: true
     duration?: true
     workload?: true
-    user_id?: true
     client_id?: true
     created_at?: true
     rate?: true
+    user_id?: true
     _all?: true
   }
 
@@ -2527,10 +2527,10 @@ export namespace Prisma {
     budget: Decimal | null
     duration: string | null
     workload: string | null
-    user_id: string | null
     client_id: string | null
     created_at: Date | null
     rate: Decimal | null
+    user_id: string | null
     _count: JobsCountAggregateOutputType | null
     _avg: JobsAvgAggregateOutputType | null
     _sum: JobsSumAggregateOutputType | null
@@ -2561,10 +2561,10 @@ export namespace Prisma {
     budget?: boolean
     duration?: boolean
     workload?: boolean
-    user_id?: boolean
     client_id?: boolean
     created_at?: boolean
     rate?: boolean
+    user_id?: boolean
     clients?: boolean | Jobs$clientsArgs<ExtArgs>
     users?: boolean | Jobs$usersArgs<ExtArgs>
   }, ExtArgs["result"]["jobs"]>
@@ -2578,10 +2578,10 @@ export namespace Prisma {
     budget?: boolean
     duration?: boolean
     workload?: boolean
-    user_id?: boolean
     client_id?: boolean
     created_at?: boolean
     rate?: boolean
+    user_id?: boolean
     clients?: boolean | Jobs$clientsArgs<ExtArgs>
     users?: boolean | Jobs$usersArgs<ExtArgs>
   }, ExtArgs["result"]["jobs"]>
@@ -2595,10 +2595,10 @@ export namespace Prisma {
     budget?: boolean
     duration?: boolean
     workload?: boolean
-    user_id?: boolean
     client_id?: boolean
     created_at?: boolean
     rate?: boolean
+    user_id?: boolean
     clients?: boolean | Jobs$clientsArgs<ExtArgs>
     users?: boolean | Jobs$usersArgs<ExtArgs>
   }, ExtArgs["result"]["jobs"]>
@@ -2612,13 +2612,13 @@ export namespace Prisma {
     budget?: boolean
     duration?: boolean
     workload?: boolean
-    user_id?: boolean
     client_id?: boolean
     created_at?: boolean
     rate?: boolean
+    user_id?: boolean
   }
 
-  export type JobsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "skills" | "job_type" | "budget" | "duration" | "workload" | "user_id" | "client_id" | "created_at" | "rate", ExtArgs["result"]["jobs"]>
+  export type JobsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "skills" | "job_type" | "budget" | "duration" | "workload" | "client_id" | "created_at" | "rate" | "user_id", ExtArgs["result"]["jobs"]>
   export type JobsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     clients?: boolean | Jobs$clientsArgs<ExtArgs>
     users?: boolean | Jobs$usersArgs<ExtArgs>
@@ -2647,10 +2647,10 @@ export namespace Prisma {
       budget: Prisma.Decimal | null
       duration: string | null
       workload: string | null
-      user_id: string | null
       client_id: string | null
       created_at: Date | null
       rate: Prisma.Decimal | null
+      user_id: string | null
     }, ExtArgs["result"]["jobs"]>
     composites: {}
   }
@@ -3084,10 +3084,10 @@ export namespace Prisma {
     readonly budget: FieldRef<"Jobs", 'Decimal'>
     readonly duration: FieldRef<"Jobs", 'String'>
     readonly workload: FieldRef<"Jobs", 'String'>
-    readonly user_id: FieldRef<"Jobs", 'String'>
     readonly client_id: FieldRef<"Jobs", 'String'>
     readonly created_at: FieldRef<"Jobs", 'DateTime'>
     readonly rate: FieldRef<"Jobs", 'Decimal'>
+    readonly user_id: FieldRef<"Jobs", 'String'>
   }
     
 
@@ -5730,10 +5730,10 @@ export namespace Prisma {
     budget: 'budget',
     duration: 'duration',
     workload: 'workload',
-    user_id: 'user_id',
     client_id: 'client_id',
     created_at: 'created_at',
-    rate: 'rate'
+    rate: 'rate',
+    user_id: 'user_id'
   };
 
   export type JobsScalarFieldEnum = (typeof JobsScalarFieldEnum)[keyof typeof JobsScalarFieldEnum]
@@ -5930,10 +5930,10 @@ export namespace Prisma {
     budget?: DecimalNullableFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
     duration?: StringNullableFilter<"Jobs"> | string | null
     workload?: StringNullableFilter<"Jobs"> | string | null
-    user_id?: StringNullableFilter<"Jobs"> | string | null
     client_id?: StringNullableFilter<"Jobs"> | string | null
     created_at?: DateTimeNullableFilter<"Jobs"> | Date | string | null
     rate?: DecimalNullableFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
+    user_id?: StringNullableFilter<"Jobs"> | string | null
     clients?: XOR<ClientsNullableScalarRelationFilter, ClientsWhereInput> | null
     users?: XOR<UsersNullableScalarRelationFilter, UsersWhereInput> | null
   }
@@ -5947,10 +5947,10 @@ export namespace Prisma {
     budget?: SortOrderInput | SortOrder
     duration?: SortOrderInput | SortOrder
     workload?: SortOrderInput | SortOrder
-    user_id?: SortOrderInput | SortOrder
     client_id?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
     rate?: SortOrderInput | SortOrder
+    user_id?: SortOrderInput | SortOrder
     clients?: ClientsOrderByWithRelationInput
     users?: UsersOrderByWithRelationInput
   }
@@ -5967,10 +5967,10 @@ export namespace Prisma {
     budget?: DecimalNullableFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
     duration?: StringNullableFilter<"Jobs"> | string | null
     workload?: StringNullableFilter<"Jobs"> | string | null
-    user_id?: StringNullableFilter<"Jobs"> | string | null
     client_id?: StringNullableFilter<"Jobs"> | string | null
     created_at?: DateTimeNullableFilter<"Jobs"> | Date | string | null
     rate?: DecimalNullableFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
+    user_id?: StringNullableFilter<"Jobs"> | string | null
     clients?: XOR<ClientsNullableScalarRelationFilter, ClientsWhereInput> | null
     users?: XOR<UsersNullableScalarRelationFilter, UsersWhereInput> | null
   }, "id">
@@ -5984,10 +5984,10 @@ export namespace Prisma {
     budget?: SortOrderInput | SortOrder
     duration?: SortOrderInput | SortOrder
     workload?: SortOrderInput | SortOrder
-    user_id?: SortOrderInput | SortOrder
     client_id?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
     rate?: SortOrderInput | SortOrder
+    user_id?: SortOrderInput | SortOrder
     _count?: JobsCountOrderByAggregateInput
     _avg?: JobsAvgOrderByAggregateInput
     _max?: JobsMaxOrderByAggregateInput
@@ -6007,10 +6007,10 @@ export namespace Prisma {
     budget?: DecimalNullableWithAggregatesFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
     duration?: StringNullableWithAggregatesFilter<"Jobs"> | string | null
     workload?: StringNullableWithAggregatesFilter<"Jobs"> | string | null
-    user_id?: StringNullableWithAggregatesFilter<"Jobs"> | string | null
     client_id?: StringNullableWithAggregatesFilter<"Jobs"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"Jobs"> | Date | string | null
     rate?: DecimalNullableWithAggregatesFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
+    user_id?: StringNullableWithAggregatesFilter<"Jobs"> | string | null
   }
 
   export type sati_usersWhereInput = {
@@ -6231,10 +6231,10 @@ export namespace Prisma {
     budget?: Decimal | DecimalJsLike | number | string | null
     duration?: string | null
     workload?: string | null
-    user_id?: string | null
     client_id?: string | null
     created_at?: Date | string | null
     rate?: Decimal | DecimalJsLike | number | string | null
+    user_id?: string | null
   }
 
   export type JobsUpdateInput = {
@@ -6261,10 +6261,10 @@ export namespace Prisma {
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     workload?: NullableStringFieldUpdateOperationsInput | string | null
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     client_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type JobsCreateManyInput = {
@@ -6276,10 +6276,10 @@ export namespace Prisma {
     budget?: Decimal | DecimalJsLike | number | string | null
     duration?: string | null
     workload?: string | null
-    user_id?: string | null
     client_id?: string | null
     created_at?: Date | string | null
     rate?: Decimal | DecimalJsLike | number | string | null
+    user_id?: string | null
   }
 
   export type JobsUpdateManyMutationInput = {
@@ -6304,10 +6304,10 @@ export namespace Prisma {
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     workload?: NullableStringFieldUpdateOperationsInput | string | null
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     client_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type sati_usersCreateInput = {
@@ -6641,10 +6641,10 @@ export namespace Prisma {
     budget?: SortOrder
     duration?: SortOrder
     workload?: SortOrder
-    user_id?: SortOrder
     client_id?: SortOrder
     created_at?: SortOrder
     rate?: SortOrder
+    user_id?: SortOrder
   }
 
   export type JobsAvgOrderByAggregateInput = {
@@ -6660,10 +6660,10 @@ export namespace Prisma {
     budget?: SortOrder
     duration?: SortOrder
     workload?: SortOrder
-    user_id?: SortOrder
     client_id?: SortOrder
     created_at?: SortOrder
     rate?: SortOrder
+    user_id?: SortOrder
   }
 
   export type JobsMinOrderByAggregateInput = {
@@ -6674,10 +6674,10 @@ export namespace Prisma {
     budget?: SortOrder
     duration?: SortOrder
     workload?: SortOrder
-    user_id?: SortOrder
     client_id?: SortOrder
     created_at?: SortOrder
     rate?: SortOrder
+    user_id?: SortOrder
   }
 
   export type JobsSumOrderByAggregateInput = {
@@ -7118,9 +7118,9 @@ export namespace Prisma {
     budget?: Decimal | DecimalJsLike | number | string | null
     duration?: string | null
     workload?: string | null
-    user_id?: string | null
     created_at?: Date | string | null
     rate?: Decimal | DecimalJsLike | number | string | null
+    user_id?: string | null
   }
 
   export type JobsCreateOrConnectWithoutClientsInput = {
@@ -7161,10 +7161,10 @@ export namespace Prisma {
     budget?: DecimalNullableFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
     duration?: StringNullableFilter<"Jobs"> | string | null
     workload?: StringNullableFilter<"Jobs"> | string | null
-    user_id?: StringNullableFilter<"Jobs"> | string | null
     client_id?: StringNullableFilter<"Jobs"> | string | null
     created_at?: DateTimeNullableFilter<"Jobs"> | Date | string | null
     rate?: DecimalNullableFilter<"Jobs"> | Decimal | DecimalJsLike | number | string | null
+    user_id?: StringNullableFilter<"Jobs"> | string | null
   }
 
   export type ClientsCreateWithoutJobsInput = {
@@ -7354,9 +7354,9 @@ export namespace Prisma {
     budget?: Decimal | DecimalJsLike | number | string | null
     duration?: string | null
     workload?: string | null
-    user_id?: string | null
     created_at?: Date | string | null
     rate?: Decimal | DecimalJsLike | number | string | null
+    user_id?: string | null
   }
 
   export type JobsUpdateWithoutClientsInput = {
@@ -7382,9 +7382,9 @@ export namespace Prisma {
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     workload?: NullableStringFieldUpdateOperationsInput | string | null
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type JobsUncheckedUpdateManyWithoutClientsInput = {
@@ -7396,9 +7396,9 @@ export namespace Prisma {
     budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     workload?: NullableStringFieldUpdateOperationsInput | string | null
-    user_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    user_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type JobsCreateManyUsersInput = {

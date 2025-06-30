@@ -137,10 +137,10 @@ exports.Prisma.JobsScalarFieldEnum = {
   budget: 'budget',
   duration: 'duration',
   workload: 'workload',
-  user_id: 'user_id',
   client_id: 'client_id',
   created_at: 'created_at',
-  rate: 'rate'
+  rate: 'rate',
+  user_id: 'user_id'
 };
 
 exports.Prisma.Sati_usersScalarFieldEnum = {
