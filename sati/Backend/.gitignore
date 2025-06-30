@@ -1,11 +1,14 @@
 node_modules
+
 # Keep environment variables out of version control
 .env
 
-# Prisma generated files
-generated/
+# RSA keys for JWT
+private_key.pem
+public_key.pem
 
-# Build output
+# Generated files
+generated/
 dist/
 build/
 
@@ -32,3 +35,4 @@ coverage/
 .Trashes
 ehthumbs.db
 Thumbs.db
+

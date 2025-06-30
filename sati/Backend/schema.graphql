@@ -1,3 +1,8 @@
+type AuthPayload {
+  token: String
+  user: Users
+}
+
 type Clients {
   company_name: String
   country: String
@@ -29,6 +34,11 @@ type Jobs {
   workload: String
 }
 
+type Mutation {
+  createUser(admin: Boolean, email: String!, full_name: String!, location: String, overview: String, password: String!, profile_url: String, rate: Float, reviews: [String!], skills: [String!], title: String!): Users
+  login(email: String!, password: String!): AuthPayload
+}
+
 """The query root type."""
 type Query {
   jobByID(id: String!): Jobs
@@ -47,12 +57,15 @@ type Users {
   id: ID
   jobs: [Jobs!]
   overview: String
-  password: String
   profile_url: String
   rate: Float
   reviews: [String!]
   skills: [String!]
   title: String
+}
+
+type loginPayload {
+  user: Users
 }
 
 type sati_users {

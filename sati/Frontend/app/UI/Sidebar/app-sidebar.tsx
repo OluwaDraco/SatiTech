@@ -51,8 +51,8 @@ const data = {
             icon: Search,
         },
         {
-            title: "Projects",
-            url: "#",
+            title: "Task",
+            url: "/dashboard/task",
             icon: FolderIcon,
         },
         {

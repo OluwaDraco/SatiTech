@@ -1,5 +1,45 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Sati Technology
+
+This application helps freelancers receive the latest Upwork job postings and manage their tasks — all in one place. Jobs are also filtered using AI to ensure each post matches the freelancer's skills and experience level.
+
+## Application
+
+##
+
+## Home/Dashboard
+
+Displays the latest in job postings
+
+## Task Dashboard
+
+A simple but intuitive way to arrange, assign, and create new tasks.
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
+##
+
 ## Getting Started
 
 First, run the development server:
@@ -24,8 +64,8 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
