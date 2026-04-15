@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import type { Metadata } from "next";
-import { client } from "../app/api/graphql/client";
+import { client } from "@sati/shared/graphql";
 import { Provider } from "urql";
 
 import localFont from "next/font/local";

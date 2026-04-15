@@ -1,9 +1,11 @@
 import * as dotenv from "dotenv";
 import { MongoClient, Collection } from "mongodb";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import express from "express";
 import { createServer } from "http";
 import cors from "cors";
+import { ClientToServerEvents, ServerToClientEvents } from "../types/types";
+import { Job } from "../types/jobType";
 
 dotenv.config();
 
@@ -18,32 +20,48 @@ if (!URI) {
 }
 
 const client = new MongoClient(URI);
-let jobs: Collection;
 
-export const io = new Server(httpServer, {
-    cors: {
-        origin: ["http://localhost:3000"],
-        methods: ["GET", "POST"],
-    },
-});
+export const io = new Server<ClientToServerEvents, ServerToClientEvents>(
+    httpServer,
+    {
+        cors: {
+            origin: ["http://localhost:3000"],
+            methods: ["GET", "POST"],
+        },
+    }
+);
 
-io.on("connection", (socket) => {
-    console.log(`client id: ${socket.id}`);
+io.on(
+    "connection",
+    (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
+        socket.on("clientMsg", async () => {
+            try {
+                await client.connect();
+                console.log("socket successfully Connected to db");
 
-    socket.on("getJobById", async (id: string) => {
-        try {
-            const job = await jobs.findOne({ id });
-            socket.emit("jobData", job);
-        } catch (err) {
-            console.error("Error fetching job:", err);
-            socket.emit("error", "Failed to fetch job data");
-        }
-    });
+                const database = client.db("test");
+                const jobsCollections: Collection<Job> =
+                    database.collection("jobs");
 
-    socket.on("disconnect", () => {
-        console.log(`Client disconnected: ${socket.id}`);
-    });
-});
+                const jobs: Job[] = await jobsCollections
+                    .find({})
+                    .map((doc) => ({
+                        ...doc,
+                        _id: doc._id.toString(), // Convert ObjectId to string if needed
+                    }))
+                    .toArray();
+                console.log(jobs[0]);
+                socket.emit("serverMsg", { jobs });
+            } catch (err) {
+                console.log(err);
+            }
+        });
+
+        socket.on("disconnect", () => {
+            console.log(`Client disconnected: ${socket.id}`);
+        });
+    }
+);
 
 const startServer = async () => {
     try {
@@ -51,11 +69,7 @@ const startServer = async () => {
         console.log("Connected successfully!");
 
         const database = client.db("test");
-        jobs = database.collection("jobs");
-
-        const job = await jobs.findOne({ id: "job_018" });
-        console.log("Initial job query:", job?.version ?? "No job found.");
-
+        const jobsCollections: Collection<Job> = database.collection("jobs");
         httpServer.listen(8080, () => {
             console.log("Server running on port 8080");
         });
