@@ -4,5 +4,5 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-    clientMsg: (data: { jobs: Job[] }) => void;
+    clientMsg: () => void;
 }

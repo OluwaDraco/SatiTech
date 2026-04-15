@@ -18,7 +18,6 @@ type SessionPayload = {
 };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Load RSA keys
 const privateKeyPem = readFileSync(
     join(__dirname, "../private_key.pem"),
     "utf8"
