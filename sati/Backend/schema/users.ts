@@ -7,10 +7,10 @@ import { generateToken, verifyToken } from "../utils/jwt";
 import { hashPassword } from "../utils/bcrypt";
 import { Prisma, Users } from "../generated/prisma";
 
-// interface AuthPayload {
-//     token: string;
-//     user: Users;
-// }
+interface AuthPayload {
+    token: string;
+    user: Users;
+}
 
 builder.queryType({
     description: "The query root type.",
@@ -73,7 +73,7 @@ builder.queryField("userByEmail", (t) =>
                 where: { email: args.email },
             });
         },
-    })
+    }),
 );
 
 builder.mutationField("login", (t) =>
@@ -105,7 +105,38 @@ builder.mutationField("login", (t) =>
                 user,
             };
         },
-    })
+    }),
+);
+builder.mutationField("signup", (t) =>
+    t.field({
+        type: "AuthPayload",
+        args: {
+            email: t.arg.string({ required: true }),
+            password: t.arg.string({ required: true }),
+        },
+        resolve: async (_parent, { email, password }, ctx) => {
+            const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+            const user = await prisma.users.findUnique({
+                where: { email },
+            });
+            if (!user) throw new Error("Incorrect email or password");
+
+            // const passwordMatch = comparePassword(password, user.password!);
+            const passwordMatch = testAuth(password, user.password);
+            if (!passwordMatch) throw new Error("Incorrect email or password");
+            // create JWT
+
+            const token = await generateToken({
+                id: user.id,
+                expiresAt: expiresAt,
+            });
+            return {
+                token,
+                user,
+            };
+        },
+    }),
 );
 
 builder.mutationField("createUser", (t) =>
@@ -144,5 +175,5 @@ builder.mutationField("createUser", (t) =>
             });
             return newUser;
         },
-    })
+    }),
 );

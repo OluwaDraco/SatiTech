@@ -1,0 +1,14 @@
+{
+  "name": "@sati/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./graphql/index.ts",
+  "types": "./graphql/index.ts",
+  "exports": {
+    "./graphql": "./graphql/index.ts"
+  },
+  "peerDependencies": {
+    "urql": "^4.2.2",
+    "wonka": "^6.3.5"
+  }
+}

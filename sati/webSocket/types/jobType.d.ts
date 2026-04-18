@@ -1,5 +1,7 @@
+import { ObjectID } from "mongodb";
 export interface Job {
     id: string;
+    _id: string | ObjectID;
     version: number;
     info: {
         title: string;
