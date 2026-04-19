@@ -11,6 +11,7 @@ export interface User {
     email: string;
     profile_url: string;
     reviews: string[];
+    password: string;
 }
 
 export interface LoginResult {

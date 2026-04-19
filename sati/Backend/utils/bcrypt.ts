@@ -5,10 +5,9 @@ export const hashPassword = (password: string) => {
     return bcrypt.hashSync(password, saltRounds);
 };
 
-export const comparePassword = (password: string, dbPass: string) => {
-    const match = bcrypt.compare(password, dbPass);
-    if (match) return true;
-    return false;
+export const comparePassword = async (password: string, dbPass: string) => {
+    const match = await bcrypt.compare(password, dbPass);
+    return match;
 };
 
 //test
