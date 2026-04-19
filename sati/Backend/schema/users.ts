@@ -2,7 +2,7 @@ import { builder } from "../utils/builder";
 import type PrismaTypes from "../prisma/generated.d.ts";
 
 import { prisma } from "../utils/db";
-import { comparePassword, testAuth } from "../utils/bcrypt";
+import { comparePassword } from "../utils/bcrypt";
 import { generateToken, verifyToken } from "../utils/jwt";
 import { hashPassword } from "../utils/bcrypt";
 import { Prisma, Users } from "../generated/prisma";
@@ -90,9 +90,9 @@ builder.mutationField("login", (t) =>
                 where: { email },
             });
             if (!user) throw new Error("Incorrect email or password");
+            if (!user.password) throw new Error("Incorrect email or password");
 
-            // const passwordMatch = comparePassword(password, user.password!);
-            const passwordMatch = testAuth(password, user.password);
+            const passwordMatch = await comparePassword(password, user.password);
             if (!passwordMatch) throw new Error("Incorrect email or password");
             // create JWT
 
@@ -121,9 +121,9 @@ builder.mutationField("signup", (t) =>
                 where: { email },
             });
             if (!user) throw new Error("Incorrect email or password");
+            if (!user.password) throw new Error("Incorrect email or password");
 
-            // const passwordMatch = comparePassword(password, user.password!);
-            const passwordMatch = testAuth(password, user.password);
+            const passwordMatch = await comparePassword(password, user.password);
             if (!passwordMatch) throw new Error("Incorrect email or password");
             // create JWT
 
