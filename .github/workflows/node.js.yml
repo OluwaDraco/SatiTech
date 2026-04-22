@@ -24,8 +24,6 @@ jobs:
     - name: Use npm to install dependencies
       run: |
         cd sati/Backend
-        npm i
         cd tests
-        npm i
     - name: Run basic test with Jest   
       run: npx jest unit-test/userByEmail.test.ts
