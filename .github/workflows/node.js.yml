@@ -23,7 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}  
     - name: Use npm to install dependencies
       run: |
-        cd Backend
+        cd sati/Backend
         npm i
         cd tests
         npm i
