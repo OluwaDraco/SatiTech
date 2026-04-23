@@ -39,7 +39,7 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - name: Use npm to install dependencies
               working-directory: sati/Backend
-              run: npm install
+              run: npm ci
             - name: Run basic test with Jest
               working-directory: sati/Backend
               run: npm test -- tests/unit-test/userByEmail.test.ts
