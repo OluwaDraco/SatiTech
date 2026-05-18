@@ -146,7 +146,9 @@ NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000
 
 ## Development Workflow
 
-1. Start PostgreSQL database
+1. Start PostgreSQL database: `pg_ctl -D /usr/local/var/postgresql@14 start`
+   - To stop: `pg_ctl -D /usr/local/var/postgresql@14 stop`
+   - To check status: `pg_ctl -D /usr/local/var/postgresql@14 status`
 2. Run Backend: `cd sati/Backend && npx tsx server.ts`
 3. Run Frontend: `cd sati/Frontend && npm run dev`
 4. Access:
