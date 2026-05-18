@@ -38,7 +38,7 @@ export function NavUser({
     const { isMobile } = useSidebar();
 
     const handleClick = () => {
-        logOut();
+        console.log(user);
     };
 
     return (

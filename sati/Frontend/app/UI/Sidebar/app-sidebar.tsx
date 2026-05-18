@@ -22,13 +22,6 @@ import {
 } from "../../../components/ui/sidebar";
 import { NavUser } from "./nav-user";
 const data = {
-    user: {
-        name: "Oludipe Olushola",
-        email: "m@example.com",
-        //change later
-        avatar: "/avatars/shadcn.jpg",
-    },
-
     NavMain: [
         {
             title: "Home",
@@ -68,7 +61,7 @@ const data = {
     ],
 };
 
-export function AppSidebar() {
+export function AppSidebar(user) {
     return (
         <Sidebar>
             <SidebarContent>
@@ -101,7 +94,7 @@ export function AppSidebar() {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-                <NavUser user={data.user} />
+                <NavUser user={user} />
             </SidebarContent>
         </Sidebar>
     );
