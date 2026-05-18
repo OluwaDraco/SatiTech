@@ -1,3 +1,4 @@
+import { title } from "process";
 import { z } from "zod";
 //delete later
 
@@ -6,9 +7,17 @@ export const loginSchema = z.object({
         .string()
         .min(1, "Please enter your email address")
         .email("Please enter a valid email address"),
-    password: z
+    password: z.string().min(1, "Please enter your password"),
+});
+
+export const signupSchema = z.object({
+    email: z
         .string()
-        .min(1, "Please enter your password"),
+        .min(1, "Please enter your email address")
+        .email("Please enter a valid email address"),
+    password: z.string().min(1, "Please enter your password"),
+    title: z.string(),
+    full_name: z.string().min(1, "Please enter your name."),
 });
 export const userSchema = z.object({
     full_name: z.string(),

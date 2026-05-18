@@ -37,7 +37,7 @@ type Jobs {
 type Mutation {
   createUser(admin: Boolean, email: String!, full_name: String!, location: String, overview: String, password: String!, profile_url: String, rate: Float, reviews: [String!], skills: [String!], title: String!): Users
   login(email: String!, password: String!): AuthPayload
-  signup(email: String!, password: String!): AuthPayload
+  signup(email: String!, full_name: String!, password: String!, title: String!): SignupPayload
 }
 
 """The query root type."""
@@ -45,6 +45,12 @@ type Query {
   jobByID(id: String!): Jobs
   user(id: ID!): sati_users
   userByEmail(email: String!): Users
+}
+
+type SignupPayload {
+  success: Boolean
+  token: String
+  user: Users
 }
 
 input UserUniqueInput {

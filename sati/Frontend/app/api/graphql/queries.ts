@@ -9,6 +9,7 @@ import {
     SignupResult,
 } from "@sati/shared/graphql";
 import { LoginResponse, SignupResponse } from "@sati/shared/graphql";
+import { error } from "console";
 
 const loginMutation = gql`
     mutation login($email: String!, $password: String!) {
@@ -86,19 +87,26 @@ export const login = async (
 export const signup = async (
     email: string,
     password: string,
+    title: string,
+    full_name: string,
 ): Promise<SignupResult> => {
     return new Promise((resolve) => {
         pipe(
             client.mutation(SIGNUP_MUTATION, {
                 email: email.trim().toLowerCase(),
                 password: password,
+                full_name: full_name,
+                title: title,
             }),
             subscribe((result) => {
                 // Check for any errors (authentication failures)
                 if (result.error) {
                     // For any authentication error, show generic message
                     //check if email already exist?
-                    resolve({ success: false, error: "Something went wrong" });
+                    resolve({
+                        success: false,
+                        error: `Something went wrong${result.error}`,
+                    });
                     return;
                 }
 
@@ -116,22 +124,21 @@ export const signup = async (
                 const { token, user } = data;
                 console.log("USER CREATED", user, token);
 
-                // Create session and resolve
-                // createSession(token)
-                //     .then(() => {
-                //         resolve({
-                //             success: true,
-                //             user,
-                //             redirect: "/dashboard",
-                //         });
-                //     })
-                //     .catch((err) => {
-                //         console.error("Session creation error:", err);
-                //         resolve({
-                //             success: false,
-                //             error: "Login successful but session creation failed. Please try again.",
-                //         });
-                //     });
+                createSession(token)
+                    .then(() => {
+                        resolve({
+                            success: true,
+                            user,
+                            redirect: "/dashboard",
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Session creation error:", err);
+                        resolve({
+                            success: false,
+                            error: "Login successful but session creation failed. Please try again.",
+                        });
+                    });
             }),
         );
     });

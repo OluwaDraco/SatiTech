@@ -15,6 +15,13 @@ interface AuthPayload {
 interface loginPayload {
     user: Users;
 }
+
+interface SignupPayload {
+    success: boolean;
+    token: string;
+    user: Users;
+}
+
 export const builder = new SchemaBuilder<{
     // Context: { user: { isAdmin: boolean } };
 
@@ -23,6 +30,7 @@ export const builder = new SchemaBuilder<{
         AuthPayload: AuthPayload;
         Users: Users;
         loginPayload: loginPayload;
+        SignupPayload: SignupPayload;
     };
     Scalars: {
         DateTime: {
