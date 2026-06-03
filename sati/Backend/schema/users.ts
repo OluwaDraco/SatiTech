@@ -61,6 +61,7 @@ builder.prismaObject("Users", {
             nullable: true,
             resolve: (users) => users.rate?.toNumber(),
         }),
+        location: t.exposeString("location", { nullable: true }),
         overview: t.exposeString("overview"),
         email: t.exposeString("email"),
         admin: t.exposeBoolean("admin"),
@@ -88,6 +89,22 @@ builder.queryField("userByEmail", (t) =>
             return prisma.users.findUnique({
                 ...query,
                 where: { email: args.email },
+            });
+        },
+    }),
+);
+
+builder.queryField("userById", (t) =>
+    t.prismaField({
+        type: "Users",
+        nullable: true,
+        args: {
+            id: t.arg.string({ required: true }),
+        },
+        resolve: (query, _parent, args, ctx) => {
+            return prisma.users.findUnique({
+                ...query,
+                where: { id: args.id },
             });
         },
     }),
@@ -136,7 +153,11 @@ builder.mutationField("signup", (t) =>
             full_name: t.arg.string({ required: true }),
             title: t.arg.string({ required: true }),
         },
-        resolve: async (_parent, { email, password, full_name, title }, ctx) => {
+        resolve: async (
+            _parent,
+            { email, password, full_name, title },
+            ctx,
+        ) => {
             const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
             //check if the user is in db
             const existingUser = await prisma.users.findUnique({
