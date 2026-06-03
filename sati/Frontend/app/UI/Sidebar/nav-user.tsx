@@ -26,20 +26,23 @@ import {
 } from "@/components/ui/sidebar";
 import { logOut } from "@/app/api/graphql/queries";
 
-export function NavUser({
-    user,
-}: {
-    user: {
-        name: string;
-        email: string;
-        avatar: string;
-    };
-}) {
+export function NavUser({ userData }: { userData }) {
     const { isMobile } = useSidebar();
 
     const handleClick = () => {
-        console.log(user);
+        logOut();
     };
+    console.log(userData.user.full_name);
+    const userInitials = (userName: string) => {
+        let name = userName
+            .split("")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+        return name;
+    };
+    const initials: string = userInitials(userData.user.full_name);
 
     return (
         <SidebarMenu>
@@ -52,19 +55,19 @@ export function NavUser({
                         >
                             <Avatar className="h-8 w-8 rounded-lg grayscale">
                                 <AvatarImage
-                                    src={user.avatar}
-                                    alt={user.name}
+                                    src={userData.avatar}
+                                    alt={userData.user.full_name}
                                 />
                                 <AvatarFallback className="rounded-lg">
-                                    OO
+                                    {initials}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">
-                                    {user.name}
+                                    {userData.user.full_name}
                                 </span>
                                 <span className="truncate text-xs text-muted-foreground">
-                                    {user.email}
+                                    {userData.user.email}
                                 </span>
                             </div>
                             <MoreVerticalIcon className="ml-auto size-4" />
@@ -80,19 +83,19 @@ export function NavUser({
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                 <Avatar className="h-8 w-8 rounded-lg">
                                     <AvatarImage
-                                        src={user.avatar}
-                                        alt={user.name}
+                                        src={userData.avatar}
+                                        alt={userData.user.full_name}
                                     />
                                     <AvatarFallback className="rounded-lg">
-                                        CN
+                                        {initials}
                                     </AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-medium">
-                                        {user.name}
+                                        {userData.user.full_name}
                                     </span>
                                     <span className="truncate text-xs text-muted-foreground">
-                                        {user.email}
+                                        {userData.user.email}
                                     </span>
                                 </div>
                             </div>

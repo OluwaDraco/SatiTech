@@ -41,6 +41,9 @@ export async function deleteSession() {
 export const currentUser = async (token: string) => {
     try {
         const userToken = await verifyToken(token);
-        console.log("token is " + userToken);
-    } catch {}
+        console.log("token is " + userToken?.id);
+        return userToken;
+    } catch (error) {
+        throw new Error();
+    }
 };

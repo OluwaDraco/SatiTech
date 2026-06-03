@@ -8,19 +8,8 @@ import {
     SIGNUP_MUTATION,
     SignupResult,
 } from "@sati/shared/graphql";
-import { LoginResponse, SignupResponse } from "@sati/shared/graphql";
+import { USER_BY_ID_QUERY } from "@sati/shared/graphql";
 import { error } from "console";
-
-const loginMutation = gql`
-    mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-            token
-            user {
-                id
-            }
-        }
-    }
-`;
 
 type LoginResult = {
     success: boolean;
@@ -35,7 +24,7 @@ export const login = async (
 ): Promise<LoginResult> => {
     return new Promise((resolve) => {
         pipe(
-            client.mutation(loginMutation, {
+            client.mutation(LOGIN_MUTATION, {
                 email: email.trim().toLowerCase(),
                 password: password,
             }),
@@ -146,4 +135,26 @@ export const signup = async (
 
 export const logOut = async () => {
     await deleteSession();
+};
+
+export const getUserById = async (id: string) => {
+    return new Promise((resolve) => {
+        pipe(
+            client.query(USER_BY_ID_QUERY, { id }),
+            subscribe((result) => {
+                if (result.error) {
+                    resolve({ success: false, error: result.error.message });
+                    return;
+                }
+
+                const user = result.data?.userById;
+                if (!user) {
+                    resolve({ success: false, error: "User not found" });
+                    return;
+                }
+
+                resolve({ success: true, user });
+            }),
+        );
+    });
 };

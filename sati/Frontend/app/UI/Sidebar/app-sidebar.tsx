@@ -61,7 +61,8 @@ const data = {
     ],
 };
 
-export function AppSidebar(user) {
+export function AppSidebar({ userData }: { userData: any }) {
+    console.log(userData);
     return (
         <Sidebar>
             <SidebarContent>
@@ -94,7 +95,7 @@ export function AppSidebar(user) {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-                <NavUser user={user} />
+                <NavUser userData={userData} />
             </SidebarContent>
         </Sidebar>
     );
