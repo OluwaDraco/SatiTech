@@ -77,7 +77,7 @@ export function AppSidebar({ userData }: { userData: any }) {
                                     <a href="#">
                                         <ArrowUpCircleIcon className="h-5 w-5" />
                                         <span className="text-base font-semibold">
-                                            Sati Technology
+                                            Shotown
                                         </span>
                                     </a>
                                 </SidebarMenuButton>

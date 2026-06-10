@@ -15,9 +15,9 @@ export default function Login() {
                             <div className="flex h-8 w-8 items-center justify-center rounded-md">
                                 <GalleryVerticalEnd className="size-6" />
                             </div>
-                            <span className="sr-only">Sati Tech.</span>
+                            <span className="sr-only">Shotown</span>
                         </a>
-                        <h1 className="text-xl font-bold">Sati Technology.</h1>
+                        <h1 className="text-xl font-bold">Shotown</h1>
                         <div className="text-center text-sm">
                             Don&apos;t have an account?{" "}
                             <a

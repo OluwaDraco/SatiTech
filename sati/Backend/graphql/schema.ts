@@ -21,6 +21,15 @@ export const typeDefs = `#graphql
   clients:     [String]  
   users:       [String] 
   }
+#this is user defined ie defined by the freelancerx
+  type Task{
+    id: String
+    title: String
+    priority: String
+    due: Date
+    reviewer: String
+
+  }
 
   type Users {
     id:          String
@@ -35,7 +44,8 @@ export const typeDefs = `#graphql
   profile_url: String
   reviews:     [String]
   password:    String
-  jobs:        [Jobs]    
+  jobs:        [Jobs]
+  tasks: [Task]    
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -44,5 +54,6 @@ export const typeDefs = `#graphql
   type Query {
     jobs: [Jobs]!
     users: [Users!]!
+    task: [Task]!
   }
 `;

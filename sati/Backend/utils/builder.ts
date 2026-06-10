@@ -2,7 +2,7 @@ import SchemaBuilder from "@pothos/core";
 import { prisma } from "./db";
 import PrismaPlugin from "@pothos/plugin-prisma";
 import type PrismaTypes from "../prisma/generated.d.ts";
-import { Users } from "../generated/prisma";
+import { Users, Task } from "../generated/prisma";
 
 import { DateTimeResolver } from "graphql-scalars";
 
@@ -29,6 +29,7 @@ export const builder = new SchemaBuilder<{
     Objects: {
         AuthPayload: AuthPayload;
         Users: Users;
+        Task: Task;
         loginPayload: loginPayload;
         SignupPayload: SignupPayload;
     };

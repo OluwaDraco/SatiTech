@@ -42,6 +42,16 @@ model Jobs {
   @@map("jobs")
 }
 
+model Task {
+  id       String    @id
+  title    String
+  priority String
+  due      DateTime? @db.Timestamp(6)
+  reviewer String
+  user_id  String?
+  users    Users?    @relation("UserTask", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model sati_users {
   id       String  @id
   email    String?
@@ -62,6 +72,7 @@ model Users {
   reviews     String[]
   password    String?
   jobs        Jobs[]   @relation("UserJobs")
+  task        Task[]   @relation("UserTask")
 
   @@map("users")
 }
