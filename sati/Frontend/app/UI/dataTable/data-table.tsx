@@ -68,7 +68,7 @@ import {
     SelectValue,
 } from "../../../components/ui/select";
 import { Separator } from "../../../components/ui/separator";
-import { CalendarForm } from "./taskForm";
+import TaskForm from "../TaskForm";
 import {
     Sheet,
     SheetContent,
@@ -90,9 +90,9 @@ import { Tabs, TabsContent } from "../../../components/ui/tabs";
 export const schema = z.object({
     id: z.number(),
     header: z.string(),
-    type: z.string(),
-    status: z.string(),
-    priority: z.string(),
+    type: z.enum(["UI", "UX", "Bugs", "Documentation", "Issue"]),
+    status: z.enum(["In Progress", "Done", "Closed"]),
+    priority: z.enum(["High", "Medium", "Low"]),
     reviewer: z.string(),
     due: z.date(),
 });
@@ -202,7 +202,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
                             loading: `Saving ${row.original.due}`,
                             success: "Done",
                             error: "Error",
-                        }
+                        },
                     );
                 }}
             >
@@ -333,26 +333,24 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 type RawDataType = {
     id: number;
     header: string;
-    type: string;
-    status: string;
-    priority: string;
+    type: "UI" | "UX" | "Bugs" | "Documentation" | "Issue";
+    status: "In Progress" | "Done" | "Closed";
+    priority: "High" | "Medium" | "Low";
     reviewer: string;
     due: string;
 };
 
-export function DataTable({
-    data: initialData,
-}: {
-    data: RawDataType[];
-}) {
+export function DataTable({ data: initialData }: { data: RawDataType[] }) {
     // Transform the raw data to match the schema
-    const transformedData = React.useMemo(() => 
-        initialData.map(item => ({
-            ...item,
-            due: new Date(item.due)
-        }))
-    , [initialData]);
-    
+    const transformedData = React.useMemo(
+        () =>
+            initialData.map((item) => ({
+                ...item,
+                due: new Date(item.due),
+            })),
+        [initialData],
+    );
+
     const [data, setData] = React.useState(() => transformedData);
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] =
@@ -368,7 +366,7 @@ export function DataTable({
 
     const dataIds = React.useMemo<UniqueIdentifier[]>(
         () => data?.map(({ id }) => id) || [],
-        [data]
+        [data],
     );
 
     const table = useReactTable({
@@ -413,6 +411,12 @@ export function DataTable({
             className="flex w-full flex-col justify-start gap-6"
         >
             <div className="flex items-center justify-end px-4 lg:px-6">
+                <div>
+                    <Button variant="outline" size="sm">
+                        <PlusIcon />
+                        <span className="hidden lg:inline">Add Task</span>
+                    </Button>
+                </div>
                 <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -431,7 +435,7 @@ export function DataTable({
                                 .filter(
                                     (column) =>
                                         typeof column.accessorFn !==
-                                            "undefined" && column.getCanHide()
+                                            "undefined" && column.getCanHide(),
                                 )
                                 .map((column) => {
                                     return (
@@ -482,7 +486,7 @@ export function DataTable({
                                                               header.column
                                                                   .columnDef
                                                                   .header,
-                                                              header.getContext()
+                                                              header.getContext(),
                                                           )}
                                                 </TableHead>
                                             );
@@ -638,6 +642,8 @@ export function DataTable({
 }
 
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
+    console.log("items");
+    console.log(item);
     const isMobile = useIsMobile();
 
     return (
@@ -650,7 +656,10 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     {item.header}
                 </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="flex flex-col">
+            <SheetContent
+                side="right"
+                className="flex w-[1000px] max-w-[90vw] flex-col sm:w-[1000px]"
+            >
                 <SheetHeader className="gap-1">
                     <SheetTitle>{item.header}</SheetTitle>
                     <SheetDescription>
@@ -677,7 +686,16 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                         </>
                     )}
 
-                    <CalendarForm item={item} />
+                    <TaskForm
+                        taskData={{
+                            title: item.header,
+                            type: item.type,
+                            status: item.status,
+                            priority: item.priority,
+                            reviewer: item.reviewer,
+                            due: item.due,
+                        }}
+                    />
                 </div>
             </SheetContent>
         </Sheet>
