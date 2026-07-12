@@ -39,6 +39,7 @@ sati/
 ## Technology Stack
 
 ### Backend
+
 - **Runtime**: Node.js with tsx
 - **Server**: GraphQL Yoga
 - **ORM**: Prisma
@@ -46,12 +47,14 @@ sati/
 - **Authentication**: JWT with jose
 
 ### Frontend (Next.js)
+
 - **Framework**: Next.js 14 (App Router)
 - **GraphQL Client**: urql
 - **Styling**: Tailwind CSS
 - **UI Components**: Radix UI + shadcn/ui
 
 ### Shared
+
 - **GraphQL**: urql (peer dependency)
 - **Language**: TypeScript
 
@@ -80,6 +83,7 @@ PostgreSQL Database
 **Why**: Enables code reuse across multiple frontend platforms (web, mobile, desktop)
 
 **Benefits**:
+
 - Single source of truth for API operations
 - Consistent types across all frontends
 - Easy to add new frontend frameworks
@@ -90,6 +94,7 @@ PostgreSQL Database
 **Why**: All related code in one repository
 
 **Benefits**:
+
 - Atomic commits across frontend/backend
 - Easier to keep API contracts in sync
 - Shared tooling and configuration
@@ -117,43 +122,45 @@ To add a new frontend (e.g., React Native, Vue, etc.):
 
 1. Create new directory: `sati/frontend-mobile/`
 2. Add to `tsconfig.json`:
-   ```json
-   {
-     "compilerOptions": {
-       "paths": {
-         "@sati/shared/*": ["../shared/*"]
-       }
-     }
-   }
-   ```
+    ```json
+    {
+        "compilerOptions": {
+            "paths": {
+                "@sati/shared/*": ["../shared/*"]
+            }
+        }
+    }
+    ```
 3. Import shared GraphQL:
-   ```typescript
-   import { client, LOGIN_MUTATION } from "@sati/shared/graphql";
-   ```
+    ```typescript
+    import { client, LOGIN_MUTATION } from "@sati/shared/graphql";
+    ```
 
 ## Environment Variables
 
 ### Backend (.env)
+
 ```
 DATABASE_URL=postgresql://user:password@localhost:5432/upwork_data
 JWT_SECRET=your-secret-key
 ```
 
 ### Frontend (.env.local)
+
 ```
 NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000
 ```
 
 ## Development Workflow
 
-1. Start PostgreSQL database: `pg_ctl -D /usr/local/var/postgresql@14 start`
-   - To stop: `pg_ctl -D /usr/local/var/postgresql@14 stop`
-   - To check status: `pg_ctl -D /usr/local/var/postgresql@14 status`
+1. Start PostgreSQL database: `pg_ctl -D /opt/homebrew/var/postgresql@17 start`
+    - To stop: `pg_ctl -D /opt/homebrew/var/postgresql@17 stop`
+    - To check status: `pg_ctl -D /opt/homebrew/var/postgresql@17 status`
 2. Run Backend: `cd sati/Backend && npx tsx server.ts`
 3. Run Frontend: `cd sati/Frontend && npm run dev`
 4. Access:
-   - Frontend: http://localhost:3000
-   - GraphQL API: http://localhost:4000
+    - Frontend: http://localhost:3000
+    - GraphQL API: http://localhost:4000
 
 ## Future Considerations
 

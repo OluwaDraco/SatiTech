@@ -33,6 +33,23 @@ export const userSchema = z.object({
     reviews: z.string().array().optional(),
 });
 
+export const taskFormSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    type: z.enum(["UI", "UX", "Bugs", "Documentation", "Issue"], {
+        required_error: "Task type is required",
+    }),
+    status: z.enum(["In Progress", "Done", "Closed"], {
+        required_error: "Status is required",
+    }),
+    priority: z.enum(["High", "Medium", "Low"], {
+        required_error: "Priority is required",
+    }),
+    reviewer: z.string().min(1, "Reviewer is required"),
+    due: z.date({
+        required_error: "Due date is required",
+    }),
+});
+
 export const Contracts = z.object({
     id: z.string(),
     reference: z.string(),
