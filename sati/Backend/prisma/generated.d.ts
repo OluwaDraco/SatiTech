@@ -80,13 +80,18 @@ export default interface PrismaTypes {
         Where: Prisma.TaskWhereInput;
         Create: {};
         Update: {};
-        RelationName: "users";
-        ListRelations: never;
+        RelationName: "users" | "jobs";
+        ListRelations: "jobs" | "task";
         Relations: {
             users: {
-                Shape: Users | null;
+                Shape: Users;
                 Name: "Users";
-                Nullable: true;
+                Nullable: false;
+            };
+            jobs: {
+                Shape: Jobs[];
+                Name: "Jobs";
+                Nullable: false;
             };
         };
     };

@@ -1,24 +1,47 @@
 import { builder } from "../utils/builder";
 import { prisma } from "../utils/db";
-builder.prismaObject("Jobs", {
+builder.prismaObject("Task", {
     fields: (t) => ({
         id: t.exposeID("id"),
-        title: t.exposeString("title", { nullable: true }),
-        priority: t.exposeString("description", { nullable: true }),
-        status: t.exposeStringList("skills"),
-        job_type: t.exposeString("job_type", { nullable: true }),
-        created_at: t.expose("created_at", {
+        title: t.exposeString("title"),
+        priority: t.exposeString("priority"),
+        status: t.exposeString("status"),
+        due: t.expose("due", {
             type: "DateTime",
             nullable: true,
         }),
-        rate: t.field({
-            type: "Float",
-            nullable: true,
-            resolve: (job) => job.rate?.toNumber(),
-        }),
-        user_id: t.exposeString("user_id", { nullable: true }),
-        client_id: t.exposeString("client_id", { nullable: true }),
-        users: t.relation("users", { nullable: true }),
-        clients: t.relation("clients", { nullable: true }),
+        reviewer: t.exposeString("reviewer"),
+        user_id: t.exposeString("user_id"),
+        job_id: t.exposeString("job_id"),
+        users: t.relation("users"),
+        job: t.relation("jobs"),
     }),
 });
+
+builder.queryField("taskByID", (t) =>
+    t.prismaField({
+        type: "Task",
+        args: {
+            id: t.arg.string({ required: true }),
+        },
+        resolve: (query, _parent, args, ctx) => {
+            return prisma.task.findUniqueOrThrow({
+                ...query,
+                where: { id: args.id },
+            });
+        },
+    }),
+);
+
+builder.queryField("allTaskByUserID", (t) =>
+    t.prismaField({
+        type: ["Task"],
+        nullable: true,
+        args: {
+            user_id: t.arg.string({ required: true }),
+        },
+        resolve: (query, _parent, args, ctx) => {
+            return prisma.task.findMany({ where: { user_id: args.user_id } });
+        },
+    }),
+);

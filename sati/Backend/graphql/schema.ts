@@ -26,6 +26,7 @@ export const typeDefs = `#graphql
     id: String
     title: String
     priority: String
+    status:String
     due: Date
     reviewer: String
 

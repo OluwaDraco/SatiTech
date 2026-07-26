@@ -49,21 +49,35 @@ type TaskData = {
     due: Date;
 };
 
-const TaskForm = ({ taskData }: { taskData: TaskData }) => {
+type CreateMode = { mode: "create" };
+type EditMode = { mode: "edit"; taskData: TaskData };
+type TaskFormProps = CreateMode | EditMode;
+
+const TaskForm = (props: TaskFormProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const form = useForm<z.infer<typeof taskFormSchema>>({
         resolver: zodResolver(taskFormSchema),
-        defaultValues: {
-            title: taskData.title,
-            type: taskData.type,
-            status: taskData.status,
-            priority: taskData.priority,
-            reviewer: taskData.reviewer,
-            due: taskData.due,
-        },
+        defaultValues:
+            props.mode === "edit"
+                ? {
+                      title: props.taskData.title,
+                      type: props.taskData.type,
+                      status: props.taskData.status,
+                      priority: props.taskData.priority,
+                      reviewer: props.taskData.reviewer,
+                      due: props.taskData.due,
+                  }
+                : {
+                      title: "",
+                      type: "Bugs",
+                      status: "In Progress",
+                      priority: "High",
+                      reviewer: "",
+                      due: new Date(),
+                  },
     });
     function onSubmit(data: z.infer<typeof taskFormSchema>) {
         console.log(JSON.stringify(data, null, 2));
