@@ -5,7 +5,7 @@ builder.queryType({
     description: "The query root type.",
 });
 
-builder.prismaObject("Job", {
+builder.prismaObject("Jobs", {
     fields: (t) => ({
         id: t.exposeID("id"),
         title: t.exposeString("title", { nullable: true }),
@@ -37,44 +37,16 @@ builder.prismaObject("Job", {
 
 builder.queryField("jobByID", (t) =>
     t.prismaField({
-        type: "Job",
+        type: "Jobs",
         nullable: true,
         args: {
             id: t.arg.string({ required: true }),
         },
         resolve: (query, _parent, args, ctx) => {
-            return prisma.job.findUnique({
+            return prisma.jobs.findUnique({
                 ...query,
                 where: { id: args.id },
             });
         },
-    }),
-);
-//returns all jobs related to user
-builder.queryField("jobsByUserID", (t) =>
-    t.prismaField({
-        type: ["Job"],
-        nullable: true,
-        args: {
-            user_id: t.arg.string({ required: true }),
-        },
-        resolve: (query, _parent, { user_id }, ctx) => {
-            return prisma.job.findMany({
-                ...query,
-                where: { user_id: user_id },
-            });
-        },
-    }),
-);
-//returns all jobs
-builder.queryField("allJobs", (t) =>
-    t.prismaField({
-        type: ["Job"],
-        nullable: true,
-        resolve: (query, _parent, _args, ctx) => {
-            return prisma.job.findMany({
-                ...query,
-            });
-        },
-    }),
+    })
 );

@@ -14,7 +14,7 @@ builder.prismaObject("Task", {
         user_id: t.exposeString("user_id"),
         job_id: t.exposeString("job_id"),
         users: t.relation("users"),
-        job: t.relation("job"),
+        job: t.relation("jobs"),
     }),
 });
 

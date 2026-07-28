@@ -8,7 +8,7 @@ type Clients {
   country: String
   feedback_score: Float
   id: ID
-  jobs: [Job!]
+  jobs: [Jobs!]
   total_spent: Float
 }
 
@@ -17,7 +17,7 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
-type Job {
+type Jobs {
   budget: Float
   client_id: String
   clients: Clients
@@ -42,7 +42,7 @@ type Mutation {
 
 """The query root type."""
 type Query {
-  jobByID(id: String!): Job
+  jobByID(id: String!): Jobs
   user(id: ID!): sati_users
   userByEmail(email: String!): Users
   userById(id: String!): Users
@@ -63,7 +63,7 @@ type Users {
   email: String
   full_name: String
   id: ID
-  jobs: [Job!]
+  jobs: [Jobs!]
   location: String
   overview: String
   profile_url: String
