@@ -78,3 +78,19 @@ builder.queryField("allJobs", (t) =>
         },
     }),
 );
+
+// Mutations
+builder.mutationField("deleteJob", (t) =>
+    t.prismaField({
+        type: "Job",
+        args: {
+            id: t.arg.string({ required: true }),
+        },
+        resolve: (query, _parent, args, ctx) => {
+            return prisma.job.delete({
+                ...query,
+                where: { id: args.id },
+            });
+        },
+    }),
+);
