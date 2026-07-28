@@ -1,8 +1,8 @@
 import React from "react";
-import LoginForm from "../UI/LoginForm";
+import SignUpForm from "../UI/SignUpForm";
 import { GalleryVerticalEnd } from "lucide-react";
 import { Button } from "../../components/ui/button";
-export default function Login() {
+export default function Signup() {
     return (
         <div className="grid text-white bg-black min-h-screen place-items-center p-8 sm:p-20 font-[family-name:var(--font-grotesk-regular)]">
             <div className="flex flex-col gap-6">
@@ -19,26 +19,26 @@ export default function Login() {
                         </a>
                         <h1 className="text-xl font-bold">Shotown</h1>
                         <div className="text-center text-sm">
-                            Don&apos;t have an account?{" "}
+                            Have an account?{" "}
                             <a
-                                href="/signup"
+                                href="/login"
                                 className="underline underline-offset-4"
                             >
-                                Sign up
+                                Login
                             </a>
                         </div>
                     </div>
                     <div className="flex flex-col gap-6"></div>
 
                     <div className="flex flex-col gap-6">
-                        <LoginForm />
+                        <SignUpForm />
                     </div>
-                    <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+                    {/* <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                         <span className="relative z-10  bg-black px-2 text-muted-foreground">
                             Or
                         </span>
-                    </div>
-                    <div className="grid gap-4 sm:grid-cols-2 text-white">
+                    </div> */}
+                    {/* <div className="grid gap-4 sm:grid-cols-2 text-white">
                         <Button
                             variant="outline"
                             className="w-full text-black hover:bg-black hover:text-white"
@@ -69,7 +69,7 @@ export default function Login() {
                             </svg>
                             Continue with Google
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">

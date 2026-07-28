@@ -128,7 +128,7 @@ exports.Prisma.ClientsScalarFieldEnum = {
   feedback_score: 'feedback_score'
 };
 
-exports.Prisma.JobsScalarFieldEnum = {
+exports.Prisma.JobScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
@@ -141,6 +141,17 @@ exports.Prisma.JobsScalarFieldEnum = {
   created_at: 'created_at',
   rate: 'rate',
   user_id: 'user_id'
+};
+
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  priority: 'priority',
+  status: 'status',
+  due: 'due',
+  reviewer: 'reviewer',
+  user_id: 'user_id',
+  job_id: 'job_id'
 };
 
 exports.Prisma.Sati_usersScalarFieldEnum = {
@@ -182,7 +193,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   Clients: 'Clients',
-  Jobs: 'Jobs',
+  Job: 'Job',
+  Task: 'Task',
   sati_users: 'sati_users',
   Users: 'Users'
 };

@@ -8,18 +8,8 @@ import {
     SIGNUP_MUTATION,
     SignupResult,
 } from "@sati/shared/graphql";
-import { LoginResponse, SignupResponse } from "@sati/shared/graphql";
-
-const loginMutation = gql`
-    mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-            token
-            user {
-                id
-            }
-        }
-    }
-`;
+import { USER_BY_ID_QUERY } from "@sati/shared/graphql";
+import { error } from "console";
 
 type LoginResult = {
     success: boolean;
@@ -34,7 +24,7 @@ export const login = async (
 ): Promise<LoginResult> => {
     return new Promise((resolve) => {
         pipe(
-            client.mutation(loginMutation, {
+            client.mutation(LOGIN_MUTATION, {
                 email: email.trim().toLowerCase(),
                 password: password,
             }),
@@ -86,19 +76,26 @@ export const login = async (
 export const signup = async (
     email: string,
     password: string,
+    title: string,
+    full_name: string,
 ): Promise<SignupResult> => {
     return new Promise((resolve) => {
         pipe(
             client.mutation(SIGNUP_MUTATION, {
                 email: email.trim().toLowerCase(),
                 password: password,
+                full_name: full_name,
+                title: title,
             }),
             subscribe((result) => {
                 // Check for any errors (authentication failures)
                 if (result.error) {
                     // For any authentication error, show generic message
                     //check if email already exist?
-                    resolve({ success: false, error: "Something went wrong" });
+                    resolve({
+                        success: false,
+                        error: `Something went wrong${result.error}`,
+                    });
                     return;
                 }
 
@@ -116,22 +113,21 @@ export const signup = async (
                 const { token, user } = data;
                 console.log("USER CREATED", user, token);
 
-                // Create session and resolve
-                // createSession(token)
-                //     .then(() => {
-                //         resolve({
-                //             success: true,
-                //             user,
-                //             redirect: "/dashboard",
-                //         });
-                //     })
-                //     .catch((err) => {
-                //         console.error("Session creation error:", err);
-                //         resolve({
-                //             success: false,
-                //             error: "Login successful but session creation failed. Please try again.",
-                //         });
-                //     });
+                createSession(token)
+                    .then(() => {
+                        resolve({
+                            success: true,
+                            user,
+                            redirect: "/dashboard",
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Session creation error:", err);
+                        resolve({
+                            success: false,
+                            error: "Login successful but session creation failed. Please try again.",
+                        });
+                    });
             }),
         );
     });
@@ -139,4 +135,26 @@ export const signup = async (
 
 export const logOut = async () => {
     await deleteSession();
+};
+
+export const getUserById = async (id: string) => {
+    return new Promise((resolve) => {
+        pipe(
+            client.query(USER_BY_ID_QUERY, { id }),
+            subscribe((result) => {
+                if (result.error) {
+                    resolve({ success: false, error: result.error.message });
+                    return;
+                }
+
+                const user = result.data?.userById;
+                if (!user) {
+                    resolve({ success: false, error: "User not found" });
+                    return;
+                }
+
+                resolve({ success: true, user });
+            }),
+        );
+    });
 };

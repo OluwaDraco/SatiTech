@@ -3,6 +3,7 @@ import type {
     Prisma,
     Clients,
     Jobs,
+    Task,
     sati_users,
     Users,
 } from "../generated/prisma/index.js";
@@ -27,6 +28,7 @@ export default interface PrismaTypes {
             };
         };
     };
+
     Jobs: {
         Name: "Jobs";
         Shape: Jobs;
@@ -52,6 +54,7 @@ export default interface PrismaTypes {
             };
         };
     };
+
     sati_users: {
         Name: "sati_users";
         Shape: sati_users;
@@ -67,6 +70,32 @@ export default interface PrismaTypes {
         Relations: {};
     };
 
+    Task: {
+        Name: "Task";
+        Shape: Task;
+        Include: Prisma.TaskInclude;
+        Select: Prisma.TaskSelect;
+        OrderBy: Prisma.TaskOrderByWithRelationInput;
+        WhereUnique: Prisma.TaskWhereUniqueInput;
+        Where: Prisma.TaskWhereInput;
+        Create: {};
+        Update: {};
+        RelationName: "users" | "jobs";
+        ListRelations: "jobs" | "task";
+        Relations: {
+            users: {
+                Shape: Users;
+                Name: "Users";
+                Nullable: false;
+            };
+            jobs: {
+                Shape: Jobs[];
+                Name: "Jobs";
+                Nullable: false;
+            };
+        };
+    };
+
     Users: {
         Name: "Users";
         Shape: Users;
@@ -77,12 +106,17 @@ export default interface PrismaTypes {
         Where: Prisma.UsersWhereInput;
         Create: {};
         Update: {};
-        RelationName: "jobs";
-        ListRelations: "jobs";
+        RelationName: "jobs" | "task";
+        ListRelations: "jobs" | "task";
         Relations: {
             jobs: {
                 Shape: Jobs[];
                 Name: "Jobs";
+                Nullable: false;
+            };
+            task: {
+                Shape: Task[];
+                Name: "Task";
                 Nullable: false;
             };
         };

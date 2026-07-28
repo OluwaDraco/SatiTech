@@ -22,13 +22,6 @@ import {
 } from "../../../components/ui/sidebar";
 import { NavUser } from "./nav-user";
 const data = {
-    user: {
-        name: "Oludipe Olushola",
-        email: "m@example.com",
-        //change later
-        avatar: "/avatars/shadcn.jpg",
-    },
-
     NavMain: [
         {
             title: "Home",
@@ -68,7 +61,8 @@ const data = {
     ],
 };
 
-export function AppSidebar() {
+export function AppSidebar({ userData }: { userData: any }) {
+    console.log(userData);
     return (
         <Sidebar>
             <SidebarContent>
@@ -83,7 +77,7 @@ export function AppSidebar() {
                                     <a href="#">
                                         <ArrowUpCircleIcon className="h-5 w-5" />
                                         <span className="text-base font-semibold">
-                                            Sati Technology
+                                            Shotown
                                         </span>
                                     </a>
                                 </SidebarMenuButton>
@@ -101,7 +95,7 @@ export function AppSidebar() {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-                <NavUser user={data.user} />
+                <NavUser userData={userData} />
             </SidebarContent>
         </Sidebar>
     );

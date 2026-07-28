@@ -1,61 +1,129 @@
 "use client";
 import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { taskFormSchema } from "../api/zodSchema";
 import { z } from "zod";
-
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+
+import { login, signup } from "../api/graphql/queries";
+import { useRouter } from "next/navigation";
+//UI components
+import { Button } from "../../components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Input } from "../../../components/ui/input";
+
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "../../components/ui/form";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "../../../components/ui/select";
-
-import { SheetClose, SheetFooter } from "../../../components/ui/sheet";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/select";
+import { Input } from "../../components/ui/input";
+import { title } from "process";
+import { SheetClose, SheetFooter } from "../../components/ui/sheet";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-const FormSchema = z.object({
-    dob: z.date({
-        required_error: "A date of birth is required.",
-    }),
-});
-
-type Item = {
-    header: string;
-    type: string;
-    status: string;
-    priority: string;
+type TaskData = {
+    title: string;
+    type: "UI" | "UX" | "Bugs" | "Documentation" | "Issue";
+    status: "In Progress" | "Done" | "Closed";
+    priority: "High" | "Medium" | "Low";
     reviewer: string;
     due: Date;
 };
 
-export function CalendarForm({ item }: { item: Item }) {
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-    });
+type CreateMode = { mode: "create" };
+type EditMode = { mode: "edit"; taskData: TaskData };
+type TaskFormProps = CreateMode | EditMode;
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
+const TaskForm = (props: TaskFormProps) => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+
+    const form = useForm<z.infer<typeof taskFormSchema>>({
+        resolver: zodResolver(taskFormSchema),
+        defaultValues:
+            props.mode === "edit"
+                ? {
+                      title: props.taskData.title,
+                      type: props.taskData.type,
+                      status: props.taskData.status,
+                      priority: props.taskData.priority,
+                      reviewer: props.taskData.reviewer,
+                      due: props.taskData.due,
+                  }
+                : {
+                      title: "",
+                      type: "Bugs",
+                      status: "In Progress",
+                      priority: "High",
+                      reviewer: "",
+                      due: new Date(),
+                  },
+    });
+    function onSubmit(data: z.infer<typeof taskFormSchema>) {
         console.log(JSON.stringify(data, null, 2));
     }
+
+    // const onSubmit = async (values: z.infer<typeof signupSchema>) => {
+    //     setIsLoading(true);
+    //     setErrorMessage(null);
+
+    //     try {
+    //         console.log("Attempting login with:", values.email);
+    //         console.log(values);
+
+    //         const result = await signup(
+    //             values.email,
+    //             values.password,
+    //             values.title,
+    //             values.full_name,
+    //         );
+
+    //         console.log("signUp result:", result);
+
+    //         if (result.success && result.redirect) {
+    //             console.log(
+    //                 "signup successful, redirecting to:",
+    //                 // result.redirect
+    //             );
+    //             router.push(result.redirect);
+    //         } else if (result.error) {
+    //             console.log("signUp failed with error:", result.error);
+    //             setErrorMessage(result.error);
+    //         } else {
+    //             console.log("Unexpected result format:", result);
+    //             setErrorMessage(
+    //                 "Something went wrong. Please try again in a moment.",
+    //             );
+    //         }
+    //     } catch (error) {
+    //         console.error("signup error caught:", error);
+    //         setErrorMessage(
+    //             "Something went wrong. Please try again in a moment.",
+    //         );
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
 
     return (
         <Form {...form}>
@@ -66,14 +134,17 @@ export function CalendarForm({ item }: { item: Item }) {
                 <div className="flex flex-col gap-3">
                     <FormField
                         control={form.control}
-                        name="task"
+                        name="title"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
-                                <FormLabel>Task</FormLabel>
+                                <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input id="task" />
+                                    <Input
+                                        id="title"
+                                        placeholder="Enter task title"
+                                        {...field}
+                                    />
                                 </FormControl>
-
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -85,30 +156,30 @@ export function CalendarForm({ item }: { item: Item }) {
                         name="type"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Type</FormLabel>
-                                <Select onValueChange={field.onChange}>
+                                <FormLabel>Task Type</FormLabel>
+                                <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                >
                                     <FormControl>
                                         <SelectTrigger
                                             id="type"
                                             className="w-full"
                                         >
-                                            <SelectValue placeholder="Select a which part you working on" />
+                                            <SelectValue placeholder="Select task type" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="frontend">
-                                            FrontEnd
+                                        <SelectItem value="UI">UI</SelectItem>
+                                        <SelectItem value="UX">UX</SelectItem>
+                                        <SelectItem value="Bugs">
+                                            Bugs
                                         </SelectItem>
-                                        <SelectItem value="backend">
-                                            BackEnd
+                                        <SelectItem value="Documentation">
+                                            Documentation
                                         </SelectItem>
-                                        <SelectItem value="ui">UI</SelectItem>
-                                        <SelectItem value="bug">Bug</SelectItem>
-                                        <SelectItem value="integration">
-                                            Integration
-                                        </SelectItem>
-                                        <SelectItem value="configuration">
-                                            Configuration
+                                        <SelectItem value="Issue">
+                                            Issue
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -123,25 +194,27 @@ export function CalendarForm({ item }: { item: Item }) {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel htmlFor="status">Status</FormLabel>
-                                <Select onValueChange={field.onChange}>
+                                <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                >
                                     <FormControl>
                                         <SelectTrigger
                                             id="status"
                                             className="w-full"
                                         >
-                                            {" "}
-                                            <SelectValue placeholder="Status" />
+                                            <SelectValue placeholder="Select status" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="Done">
-                                            Done
-                                        </SelectItem>
                                         <SelectItem value="In Progress">
                                             In Progress
                                         </SelectItem>
-                                        <SelectItem value="Not Started">
-                                            Not Started
+                                        <SelectItem value="Done">
+                                            Done
+                                        </SelectItem>
+                                        <SelectItem value="Closed">
+                                            Closed
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -152,29 +225,29 @@ export function CalendarForm({ item }: { item: Item }) {
                 </div>
 
                 <FormField
-                    // color change as date gets closer Code green-low, yellow-medium,red-high
-                    //changes
                     control={form.control}
                     name="priority"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel htmlFor="priority">Priority</FormLabel>
-                            <Select onValueChange={field.onChange}>
+                            <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                            >
                                 <FormControl>
                                     <SelectTrigger
                                         id="priority"
                                         className="w-full"
                                     >
-                                        {" "}
-                                        <SelectValue placeholder="" />
+                                        <SelectValue placeholder="Select priority" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value="low">Low</SelectItem>
-                                    <SelectItem value="medium">
+                                    <SelectItem value="High">High</SelectItem>
+                                    <SelectItem value="Medium">
                                         Medium
                                     </SelectItem>
-                                    <SelectItem value="high">High</SelectItem>
+                                    <SelectItem value="Low">Low</SelectItem>
                                 </SelectContent>
                             </Select>
                             <FormMessage />
@@ -183,21 +256,21 @@ export function CalendarForm({ item }: { item: Item }) {
                 />
 
                 <FormField
-                    // color change as date gets closer Code green-low, yellow-medium,red-high
-                    //changes
                     control={form.control}
                     name="reviewer"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel htmlFor="reviewer">Reviewer</FormLabel>
-                            <Select onValueChange={field.onChange}>
+                            <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                            >
                                 <FormControl>
                                     <SelectTrigger
                                         id="reviewer"
                                         className="w-full"
                                     >
-                                        {" "}
-                                        <SelectValue placeholder="Who will review your work?" />
+                                        <SelectValue placeholder="Select reviewer" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -222,22 +295,22 @@ export function CalendarForm({ item }: { item: Item }) {
                     name="due"
                     render={({ field }) => (
                         <FormItem className="flex flex-col">
-                            <FormLabel>Due Date</FormLabel>
+                            <FormLabel>Due By</FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <FormControl>
                                         <Button
                                             variant={"outline"}
                                             className={cn(
-                                                "w-[240px] pl-3 text-left font-normal",
+                                                "w-full pl-3 text-left font-normal",
                                                 !field.value &&
-                                                    "text-muted-foreground"
+                                                    "text-muted-foreground",
                                             )}
                                         >
                                             {field.value ? (
                                                 format(field.value, "PPP")
                                             ) : (
-                                                <span>Pick a date</span>
+                                                <span>Select due date</span>
                                             )}
                                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                         </Button>
@@ -252,8 +325,10 @@ export function CalendarForm({ item }: { item: Item }) {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         disabled={(date) =>
-                                            date > new Date() ||
-                                            date < new Date("1900-01-01")
+                                            date <
+                                            new Date(
+                                                new Date().setHours(0, 0, 0, 0),
+                                            )
                                         }
                                         initialFocus
                                     />
@@ -278,4 +353,6 @@ export function CalendarForm({ item }: { item: Item }) {
         //     </SheetContent>
         // </Sheet>
     );
-}
+};
+
+export default TaskForm;

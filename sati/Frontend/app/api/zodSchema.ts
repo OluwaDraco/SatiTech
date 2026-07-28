@@ -1,3 +1,4 @@
+import { title } from "process";
 import { z } from "zod";
 //delete later
 
@@ -6,9 +7,17 @@ export const loginSchema = z.object({
         .string()
         .min(1, "Please enter your email address")
         .email("Please enter a valid email address"),
-    password: z
+    password: z.string().min(1, "Please enter your password"),
+});
+
+export const signupSchema = z.object({
+    email: z
         .string()
-        .min(1, "Please enter your password"),
+        .min(1, "Please enter your email address")
+        .email("Please enter a valid email address"),
+    password: z.string().min(1, "Please enter your password"),
+    title: z.string(),
+    full_name: z.string().min(1, "Please enter your name."),
 });
 export const userSchema = z.object({
     full_name: z.string(),
@@ -22,6 +31,23 @@ export const userSchema = z.object({
     profile_url: z.string(),
     overview: z.string(),
     reviews: z.string().array().optional(),
+});
+
+export const taskFormSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    type: z.enum(["UI", "UX", "Bugs", "Documentation", "Issue"], {
+        required_error: "Task type is required",
+    }),
+    status: z.enum(["In Progress", "Done", "Closed"], {
+        required_error: "Status is required",
+    }),
+    priority: z.enum(["High", "Medium", "Low"], {
+        required_error: "Priority is required",
+    }),
+    reviewer: z.string().min(1, "Reviewer is required"),
+    due: z.date({
+        required_error: "Due date is required",
+    }),
 });
 
 export const Contracts = z.object({

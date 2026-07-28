@@ -10,7 +10,7 @@ export default function Home() {
                     className="text-white text-5xl
 font-[family-name:var(--font-grotesk-bold)] "
                 >
-                    SATI TECHNOLOGY
+                    SHOTOWN
                 </h1>
 
                 <div className="relative">

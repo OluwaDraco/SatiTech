@@ -18,12 +18,12 @@ model Clients {
   country        String?
   total_spent    Decimal? @db.Decimal
   feedback_score Decimal? @db.Decimal
-  jobs           Jobs[]
+  jobs           Job[]
 
   @@map("client")
 }
 
-model Jobs {
+model Job {
   id          String    @id
   title       String?
   description String?
@@ -38,8 +38,22 @@ model Jobs {
   user_id     String?
   clients     Clients?  @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users       Users?    @relation("UserJobs", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  task        Task[]    @relation("JobTasks")
 
   @@map("jobs")
+}
+
+model Task {
+  id       String    @id
+  title    String
+  priority String
+  status   String
+  due      DateTime? @db.Timestamp(6)
+  reviewer String
+  user_id  String
+  job_id   String
+  users    Users     @relation("UserTask", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  job      Job       @relation("JobTasks", fields: [job_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model sati_users {
@@ -61,7 +75,8 @@ model Users {
   profile_url String?
   reviews     String[]
   password    String?
-  jobs        Jobs[]   @relation("UserJobs")
+  jobs        Job[]    @relation("UserJobs")
+  task        Task[]   @relation("UserTask")
 
   @@map("users")
 }
