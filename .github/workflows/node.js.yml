@@ -10,20 +10,36 @@ on:
     branches: [ "main","staging","develop"]
 
 jobs:
-  build:
+    scan:
+        
+        name: gitleaks
+        runs-on: Agent-1
+        permissions:
+          contents: read
+          pull-requests: read
+        steps:
+            - name: Clean gitleaks temp file
+              run: rm -f /tmp/gitleaks.tmp
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: gitleaks/gitleaks-action@v2
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    runs-on: Agent-1
+    build:
+        runs-on: Agent-1
+        needs: scan
 
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}  
-    - name: Use npm to install dependencies
-      working-directory: sati/Backend
-      run: npm install
-    - name: Run basic test with Jest   
-      working-directory: sati/Backend
-      run: npm test -- tests/unit-test/userByEmail.test.ts
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Use npm to install dependencies
+              working-directory: sati/Backend
+              run: npm ci
+            - name: Run basic test with Jest
+              working-directory: sati/Backend
+              run: npm test -- tests/unit-test/userByEmail.test.ts
