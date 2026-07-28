@@ -7,6 +7,7 @@ import "./users";
 import "./jobs";
 import "./clients";
 import "./sati_users";
+import "./tasks";
 
 // Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);

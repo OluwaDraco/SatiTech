@@ -44,9 +44,9 @@ import {
     PlusIcon,
 } from "lucide-react";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { useIsMobile } from "../../../hooks/use-mobile";
+import { Task, RawTask, taskSchema } from "../../../types";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 
@@ -68,7 +68,7 @@ import {
     SelectValue,
 } from "../../../components/ui/select";
 import { Separator } from "../../../components/ui/separator";
-import { CalendarForm } from "./taskForm";
+import TaskForm from "../TaskForm";
 import {
     Sheet,
     SheetContent,
@@ -86,16 +86,7 @@ import {
     TableRow,
 } from "../../../components/ui/table";
 import { Tabs, TabsContent } from "../../../components/ui/tabs";
-
-export const schema = z.object({
-    id: z.number(),
-    header: z.string(),
-    type: z.string(),
-    status: z.string(),
-    priority: z.string(),
-    reviewer: z.string(),
-    due: z.date(),
-});
+import { TableCellViewer } from "./TableCellViewer";
 
 // Create a separate component for the drag handle
 function DragHandle({ id }: { id: number }) {
@@ -116,7 +107,7 @@ function DragHandle({ id }: { id: number }) {
         </Button>
     );
 }
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
+const columns: ColumnDef<Task>[] = [
     {
         id: "drag",
         header: () => null,
@@ -154,7 +145,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         accessorKey: "header",
         header: "Header",
         cell: ({ row }) => {
-            return <TableCellViewer item={row.original} />;
+            return <div>{row.original.header}</div>;
         },
         enableHiding: false,
     },
@@ -202,7 +193,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
                             loading: `Saving ${row.original.due}`,
                             success: "Done",
                             error: "Error",
-                        }
+                        },
                     );
                 }}
             >
@@ -280,31 +271,46 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     },
     {
         id: "actions",
-        cell: () => (
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="ghost"
-                        className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-                        size="icon"
-                    >
-                        <MoreVerticalIcon />
-                        <span className="sr-only">Open menu</span>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-32">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Make a copy</DropdownMenuItem>
-                    <DropdownMenuItem>Favorite</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        ),
+        cell: ({ row }) => {
+            const [isEditSheetOpen, setIsEditSheetOpen] = React.useState(false);
+
+            return (
+                <>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+                                size="icon"
+                            >
+                                <MoreVerticalIcon />
+                                <span className="sr-only">Open menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-32">
+                            <DropdownMenuItem
+                                onSelect={() => setIsEditSheetOpen(true)}
+                            >
+                                Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>Make a copy</DropdownMenuItem>
+                            <DropdownMenuItem>Favorite</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <TableCellViewer
+                        item={row.original}
+                        open={isEditSheetOpen}
+                        onOpenChange={setIsEditSheetOpen}
+                    />
+                </>
+            );
+        },
     },
 ];
 
-function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
+function DraggableRow({ row }: { row: Row<Task> }) {
     const { transform, transition, setNodeRef, isDragging } = useSortable({
         id: row.original.id,
     });
@@ -329,30 +335,17 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
     );
 }
 
-// Define the raw data type (before Zod transformation)
-type RawDataType = {
-    id: number;
-    header: string;
-    type: string;
-    status: string;
-    priority: string;
-    reviewer: string;
-    due: string;
-};
-
-export function DataTable({
-    data: initialData,
-}: {
-    data: RawDataType[];
-}) {
+export function DataTable({ data: initialData }: { data: RawTask[] }) {
     // Transform the raw data to match the schema
-    const transformedData = React.useMemo(() => 
-        initialData.map(item => ({
-            ...item,
-            due: new Date(item.due)
-        }))
-    , [initialData]);
-    
+    const transformedData = React.useMemo(
+        () =>
+            initialData.map((item) => ({
+                ...item,
+                due: new Date(item.due),
+            })),
+        [initialData],
+    );
+
     const [data, setData] = React.useState(() => transformedData);
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] =
@@ -368,7 +361,7 @@ export function DataTable({
 
     const dataIds = React.useMemo<UniqueIdentifier[]>(
         () => data?.map(({ id }) => id) || [],
-        [data]
+        [data],
     );
 
     const table = useReactTable({
@@ -413,6 +406,32 @@ export function DataTable({
             className="flex w-full flex-col justify-start gap-6"
         >
             <div className="flex items-center justify-end px-4 lg:px-6">
+                <div>
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="outline" size="sm">
+                                <PlusIcon />
+                                <span className="hidden lg:inline">
+                                    Add Task
+                                </span>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent
+                            side="right"
+                            className="flex w-[1300px] max-w-[1300px] flex-col"
+                        >
+                            <SheetHeader className="gap-1">
+                                <SheetTitle>Create New Task</SheetTitle>
+                                <SheetDescription>
+                                    Fill in the details to create a new task
+                                </SheetDescription>
+                            </SheetHeader>
+                            <div className="flex flex-1 flex-col gap-4 overflow-y-auto py-4">
+                                <TaskForm mode="create" />
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                </div>
                 <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -431,7 +450,7 @@ export function DataTable({
                                 .filter(
                                     (column) =>
                                         typeof column.accessorFn !==
-                                            "undefined" && column.getCanHide()
+                                            "undefined" && column.getCanHide(),
                                 )
                                 .map((column) => {
                                     return (
@@ -482,7 +501,7 @@ export function DataTable({
                                                               header.column
                                                                   .columnDef
                                                                   .header,
-                                                              header.getContext()
+                                                              header.getContext(),
                                                           )}
                                                 </TableHead>
                                             );
@@ -637,49 +656,3 @@ export function DataTable({
     );
 }
 
-function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
-    const isMobile = useIsMobile();
-
-    return (
-        <Sheet>
-            <SheetTrigger asChild>
-                <Button
-                    variant="link"
-                    className="w-fit px-0 text-left text-foreground"
-                >
-                    {item.header}
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="flex flex-col">
-                <SheetHeader className="gap-1">
-                    <SheetTitle>{item.header}</SheetTitle>
-                    <SheetDescription>
-                        Before marking as done make sure its been reviewed
-                    </SheetDescription>
-                </SheetHeader>
-                <div className="flex flex-1 flex-col gap-4 overflow-y-auto py-4 text-sm">
-                    {!isMobile && (
-                        <>
-                            <Separator />
-                            <div className="grid gap-2">
-                                <div className="flex gap-2 font-medium leading-none">
-                                    A note on how to break dow problems into
-                                    small task
-                                </div>
-                                <div className="text-muted-foreground">
-                                    Break complex software problems into
-                                    bite-sized tasks. Focus on one goal at a
-                                    time to reduce overwhelm, improve clarity,
-                                    and make steady, measurable progress.
-                                </div>
-                            </div>
-                            <Separator />
-                        </>
-                    )}
-
-                    <CalendarForm item={item} />
-                </div>
-            </SheetContent>
-        </Sheet>
-    );
-}

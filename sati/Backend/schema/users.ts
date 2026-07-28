@@ -12,10 +12,16 @@ interface AuthPayload {
     user: Users;
 }
 
+interface SignupPayload {
+    success: boolean;
+    token: string;
+    user: Users;
+}
+
 builder.queryType({
     description: "The query root type.",
 });
-builder.objectType("AuthPayload", {
+builder.objectType<AuthPayload>("AuthPayload", {
     fields: (t) => ({
         token: t.exposeString("token"),
         user: t.field({
@@ -34,6 +40,17 @@ builder.objectType("loginPayload", {
     }),
 });
 
+builder.objectType<SignupPayload>("SignupPayload", {
+    fields: (t) => ({
+        success: t.exposeBoolean("success"),
+        token: t.exposeString("token"),
+        user: t.field({
+            type: "Users",
+            resolve: (signup) => signup.user,
+        }),
+    }),
+});
+
 builder.prismaObject("Users", {
     fields: (t) => ({
         id: t.exposeID("id"),
@@ -44,6 +61,7 @@ builder.prismaObject("Users", {
             nullable: true,
             resolve: (users) => users.rate?.toNumber(),
         }),
+        location: t.exposeString("location", { nullable: true }),
         overview: t.exposeString("overview"),
         email: t.exposeString("email"),
         admin: t.exposeBoolean("admin"),
@@ -76,6 +94,22 @@ builder.queryField("userByEmail", (t) =>
     }),
 );
 
+builder.queryField("userById", (t) =>
+    t.prismaField({
+        type: "Users",
+        nullable: true,
+        args: {
+            id: t.arg.string({ required: true }),
+        },
+        resolve: (query, _parent, args, ctx) => {
+            return prisma.users.findUnique({
+                ...query,
+                where: { id: args.id },
+            });
+        },
+    }),
+);
+
 builder.mutationField("login", (t) =>
     t.field({
         type: "AuthPayload",
@@ -92,7 +126,10 @@ builder.mutationField("login", (t) =>
             if (!user) throw new Error("Incorrect email or password");
             if (!user.password) throw new Error("Incorrect email or password");
 
-            const passwordMatch = await comparePassword(password, user.password);
+            const passwordMatch = await comparePassword(
+                password,
+                user.password,
+            );
             if (!passwordMatch) throw new Error("Incorrect email or password");
             // create JWT
 
@@ -109,29 +146,50 @@ builder.mutationField("login", (t) =>
 );
 builder.mutationField("signup", (t) =>
     t.field({
-        type: "AuthPayload",
+        type: "SignupPayload",
         args: {
             email: t.arg.string({ required: true }),
             password: t.arg.string({ required: true }),
+            full_name: t.arg.string({ required: true }),
+            title: t.arg.string({ required: true }),
         },
-        resolve: async (_parent, { email, password }, ctx) => {
+        resolve: async (
+            _parent,
+            { email, password, full_name, title },
+            ctx,
+        ) => {
             const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
-
-            const user = await prisma.users.findUnique({
+            //check if the user is in db
+            const existingUser = await prisma.users.findUnique({
                 where: { email },
             });
-            if (!user) throw new Error("Incorrect email or password");
-            if (!user.password) throw new Error("Incorrect email or password");
+            if (existingUser) throw new Error("User already exist");
 
-            const passwordMatch = await comparePassword(password, user.password);
-            if (!passwordMatch) throw new Error("Incorrect email or password");
-            // create JWT
+            //create user
+            const hashedPassword = await hashPassword(password);
+            const user = await prisma.users.create({
+                data: {
+                    email: email,
+                    password: hashedPassword,
+                    full_name: full_name,
+                    title: title,
+                    rate: null,
+                    location: null,
+                    skills: [],
+                    overview: null,
+                    admin: false,
+                    profile_url: null,
+                    reviews: [],
+                },
+            });
 
+            //generate token
             const token = await generateToken({
                 id: user.id,
                 expiresAt: expiresAt,
             });
             return {
+                success: true,
                 token,
                 user,
             };

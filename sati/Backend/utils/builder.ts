@@ -1,8 +1,8 @@
 import SchemaBuilder from "@pothos/core";
 import { prisma } from "./db";
 import PrismaPlugin from "@pothos/plugin-prisma";
-import type PrismaTypes from "../prisma/generated.d.ts";
-import { Users } from "../generated/prisma";
+import type PrismaTypes from "@pothos/plugin-prisma/generated";
+import { Users, Task } from "../generated/prisma";
 
 import { DateTimeResolver } from "graphql-scalars";
 
@@ -15,6 +15,13 @@ interface AuthPayload {
 interface loginPayload {
     user: Users;
 }
+
+interface SignupPayload {
+    success: boolean;
+    token: string;
+    user: Users;
+}
+
 export const builder = new SchemaBuilder<{
     // Context: { user: { isAdmin: boolean } };
 
@@ -22,7 +29,9 @@ export const builder = new SchemaBuilder<{
     Objects: {
         AuthPayload: AuthPayload;
         Users: Users;
+        Task: Task;
         loginPayload: loginPayload;
+        SignupPayload: SignupPayload;
     };
     Scalars: {
         DateTime: {

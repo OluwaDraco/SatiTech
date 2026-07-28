@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../../../Backend/utils/jwt";
 
 export const createSession = async (token: string) => {
@@ -16,11 +17,6 @@ export const createSession = async (token: string) => {
     });
     console.log("session created");
     // Don't redirect here - let the caller handle it
-};
-
-export const createSessionAndRedirect = async (token: string) => {
-    await createSession(token);
-    redirect("/dashboard");
 };
 
 export const verifySession = async () => {
@@ -41,3 +37,13 @@ export async function deleteSession() {
     cookies().delete("session");
     redirect("/login");
 }
+
+export const currentUser = async (token: string) => {
+    try {
+        const userToken = await verifyToken(token);
+        console.log("token is " + userToken?.id);
+        return userToken;
+    } catch (error) {
+        throw new Error();
+    }
+};
