@@ -21,7 +21,7 @@ interface SignupPayload {
 builder.queryType({
     description: "The query root type.",
 });
-builder.objectType<AuthPayload>("AuthPayload", {
+builder.objectType("AuthPayload", {
     fields: (t) => ({
         token: t.exposeString("token"),
         user: t.field({
@@ -40,7 +40,7 @@ builder.objectType("loginPayload", {
     }),
 });
 
-builder.objectType<SignupPayload>("SignupPayload", {
+builder.objectType("SignupPayload", {
     fields: (t) => ({
         success: t.exposeBoolean("success"),
         token: t.exposeString("token"),
