@@ -30,7 +30,7 @@ builder.prismaObject("Jobs", {
         }),
         user_id: t.exposeString("user_id", { nullable: true }),
         client_id: t.exposeString("client_id", { nullable: true }),
-        users: t.relation("users", { nullable: true }),
+        user: t.relation("users", { nullable: true }),
         clients: t.relation("clients", { nullable: true }),
     }),
 });
@@ -43,7 +43,7 @@ builder.queryField("jobByID", (t) =>
             id: t.arg.string({ required: true }),
         },
         resolve: (query, _parent, args, ctx) => {
-            return prisma.jobs.findUnique({
+            return prisma.job.findUnique({
                 ...query,
                 where: { id: args.id },
             });

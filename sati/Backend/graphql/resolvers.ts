@@ -3,14 +3,14 @@ const prisma = new PrismaClient();
 
 export const resolvers = {
     Query: {
-        users: async (parent, args, context) => {
+        user: async (parent, args, context) => {
             const allUsers = await prisma.users.findMany();
             return allUsers ?? []; // Fallback to empty array just in case
         },
-        user: async (parent, args, context) => {
+        userByEmail: async (parent, args, context) => {
             const { email } = args;
-            const user = await prisma.users.findUnique(email);
-            return user ?? null; // Fallback to empty array just in case
+            const user = await prisma.users.findUnique({ where: { email } });
+            return user ?? null; // Fallback to null if not found
         },
     },
     Mutations: {

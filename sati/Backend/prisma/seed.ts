@@ -132,7 +132,7 @@ async function main() {
     });
 
     // Jobs
-    await prisma.jobs.createMany({
+    await prisma.job.createMany({
         data: [
             {
                 id: "j1",
