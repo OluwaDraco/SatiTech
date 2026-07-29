@@ -15,9 +15,9 @@ export default async function Layout({
     children: React.ReactNode;
 }) {
     const user = cookies().get("session")?.value;
-    const userData = await currentUser(user);
+    const userData = user ? await currentUser(user) : null;
     console.log(userData);
-    const propData = await getUserById(userData?.id);
+    const propData = userData?.id ? await getUserById(userData.id as string) : null;
     console.log(propData);
 
     return (
