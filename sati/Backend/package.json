@@ -44,7 +44,9 @@
         "compile": "tsc",
         "start": "npm run compile && node ./dist/index.js",
         "dev": "ts-node-dev --respawn ./index.ts",
-        "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+        "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+        "postinstall": "prisma generate",
+        "build": "tsc && cp -r generated dist/generated"
     },
     "prisma": {
         "seed": "npx ts-node prisma/seed.ts"
