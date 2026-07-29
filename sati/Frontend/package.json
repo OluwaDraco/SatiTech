@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "next lint",
         "devBE": "ts-node index.ts",
-        "codegen": "graphql-codegen --config codegen.ts"
+        "codegen": "graphql-codegen --config codegen.ts",
+        "postinstall": "cd ../shared && npm install"
     },
     "dependencies": {
         "@sati/shared": "file:../shared",
