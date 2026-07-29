@@ -5,17 +5,17 @@ import { prisma } from "../utils/db";
 import { comparePassword } from "../utils/bcrypt";
 import { generateToken, verifyToken } from "../utils/jwt";
 import { hashPassword } from "../utils/bcrypt";
-import { Prisma, Users } from "../generated/prisma";
+import { Prisma, Users as UserType } from "../generated/prisma";
 
 interface AuthPayload {
     token: string;
-    user: Users;
+    user: UserType;
 }
 
 interface SignupPayload {
     success: boolean;
     token: string;
-    user: Users;
+    user: UserType;
 }
 
 builder.queryType({
@@ -52,6 +52,7 @@ builder.objectType<SignupPayload>("SignupPayload", {
 });
 
 builder.prismaObject("Users", {
+    name: "User",
     fields: (t) => ({
         id: t.exposeID("id"),
         full_name: t.exposeString("full_name"),

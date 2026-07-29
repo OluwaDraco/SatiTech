@@ -181,7 +181,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/shotown3/Desktop/Sati/sati/Backend/generated/prisma",
+      "value": "/Users/shotown3/SatiTech/sati/Backend/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -195,7 +195,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/shotown3/Desktop/Sati/sati/Backend/prisma/schema.prisma",
+    "sourceFilePath": "/Users/shotown3/SatiTech/sati/Backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

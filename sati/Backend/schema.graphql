@@ -1,15 +1,15 @@
 type AuthPayload {
-  token: String
-  user: Users
+    token: String
+    user: User
 }
 
 type Clients {
-  company_name: String
-  country: String
-  feedback_score: Float
-  id: ID
-  jobs: [Jobs!]
-  total_spent: Float
+    company_name: String
+    country: String
+    feedback_score: Float
+    id: ID
+    job: [Job!]
+    total_spent: Float
 }
 
 """
@@ -17,68 +17,87 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
-type Jobs {
-  budget: Float
-  client_id: String
-  clients: Clients
-  created_at: DateTime
-  description: String
-  duration: String
-  id: ID
-  job_type: String
-  rate: Float
-  skills: [String!]
-  title: String
-  user_id: String
-  users: Users
-  workload: String
+type Job {
+    budget: Float
+    client_id: String
+    clients: Clients
+    created_at: DateTime
+    description: String
+    duration: String
+    id: ID
+    job_type: String
+    rate: Float
+    skills: [String!]
+    title: String
+    user_id: String
+    user: User
+    workload: String
 }
 
 type Mutation {
-  createUser(admin: Boolean, email: String!, full_name: String!, location: String, overview: String, password: String!, profile_url: String, rate: Float, reviews: [String!], skills: [String!], title: String!): Users
-  login(email: String!, password: String!): AuthPayload
-  signup(email: String!, full_name: String!, password: String!, title: String!): SignupPayload
+    createUser(
+        admin: Boolean
+        email: String!
+        full_name: String!
+        location: String
+        overview: String
+        password: String!
+        profile_url: String
+        rate: Float
+        reviews: [String!]
+        skills: [String!]
+        title: String!
+    ): User
+    login(email: String!, password: String!): AuthPayload
+    signup(
+        email: String!
+        full_name: String!
+        password: String!
+        title: String!
+    ): SignupPayload
 }
 
-"""The query root type."""
+"""
+The query root type.
+"""
 type Query {
-  jobByID(id: String!): Jobs
-  user(id: ID!): sati_users
-  userByEmail(email: String!): Users
-  userById(id: String!): Users
+    jobByID(id: String!): Job
+    user(id: ID!): sati_users
+    userByEmail(email: String!): User
+    userById(id: String!): User
 }
 
 type SignupPayload {
-  success: Boolean
-  token: String
-  user: Users
+    success: Boolean
+    token: String
+    user: User
 }
 
 input UserUniqueInput {
-  email: String
+    email: String
 }
 
-type Users {
-  admin: Boolean
-  email: String
-  full_name: String
-  id: ID
-  jobs: [Jobs!]
-  location: String
-  overview: String
-  profile_url: String
-  rate: Float
-  reviews: [String!]
-  skills: [String!]
-  title: String
+type User {
+    admin: Boolean
+    email: String
+    full_name: String
+    id: ID
+    job: [Job!]
+    location: String
+    overview: String
+    profile_url: String
+    rate: Float
+    reviews: [String!]
+    skills: [String!]
+    title: String
 }
 
 type loginPayload {
-  user: Users
+    user: User
 }
 
 type sati_users {
-  email: String
-  id: ID
-  password: String
+    email: String
+    id: ID
+    password: String
 }

@@ -2,7 +2,7 @@
 import type {
     Prisma,
     Clients,
-    Jobs,
+    Job,
     Task,
     sati_users,
     Users,
@@ -22,8 +22,8 @@ export default interface PrismaTypes {
         ListRelations: "jobs";
         Relations: {
             jobs: {
-                Shape: Jobs[];
-                Name: "Jobs";
+                Shape: Job[];
+                Name: "Job";
                 Nullable: false;
             };
         };
@@ -31,12 +31,12 @@ export default interface PrismaTypes {
 
     Jobs: {
         Name: "Jobs";
-        Shape: Jobs;
-        Include: Prisma.JobsInclude;
-        Select: Prisma.JobsSelect;
-        OrderBy: Prisma.JobsOrderByWithRelationInput;
-        WhereUnique: Prisma.JobsWhereUniqueInput;
-        Where: Prisma.JobsWhereInput;
+        Shape: Job;
+        Include: Prisma.JobInclude;
+        Select: Prisma.JobSelect;
+        OrderBy: Prisma.JobOrderByWithRelationInput;
+        WhereUnique: Prisma.JobWhereUniqueInput;
+        Where: Prisma.JobWhereInput;
         Create: {};
         Update: {};
         RelationName: "clients" | "users";
@@ -89,8 +89,8 @@ export default interface PrismaTypes {
                 Nullable: false;
             };
             jobs: {
-                Shape: Jobs[];
-                Name: "Jobs";
+                Shape: Job[];
+                Name: "Job";
                 Nullable: false;
             };
         };
@@ -110,8 +110,8 @@ export default interface PrismaTypes {
         ListRelations: "jobs" | "task";
         Relations: {
             jobs: {
-                Shape: Jobs[];
-                Name: "Jobs";
+                Shape: Job[];
+                Name: "Job";
                 Nullable: false;
             };
             task: {
