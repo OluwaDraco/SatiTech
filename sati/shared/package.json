@@ -7,7 +7,7 @@
   "exports": {
     "./graphql": "./graphql/index.ts"
   },
-  "peerDependencies": {
+  "dependencies": {
     "urql": "^4.2.2",
     "wonka": "^6.3.5"
   }
