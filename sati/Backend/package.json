@@ -41,7 +41,7 @@
     "description": "",
     "type": "module",
     "scripts": {
-        "compile": "tsc",
+        "compile": "rm -rf dist && tsc && cp -r generated dist/generated",
         "start": "npm run compile && node ./dist/index.js",
         "dev": "ts-node-dev --respawn ./index.ts",
         "test": "NODE_OPTIONS=--experimental-vm-modules jest",
