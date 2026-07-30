@@ -1,5 +1,3 @@
-import path from "path";
-import { fileURLToPath } from "url";
 import {
     SignJWT,
     jwtVerify,
@@ -7,21 +5,15 @@ import {
     importPKCS8,
     importSPKI,
 } from "jose";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 export type SessionPayload = {
     id: string | number;
     expiresAt: Date;
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const privateKeyPem = readFileSync(
-    join(__dirname, "../../private_key.pem"),
-    "utf8"
-);
-const publicKeyPem = readFileSync(join(__dirname, "../../public_key.pem"), "utf8");
+// Use environment variables for keys (set in Vercel dashboard)
+const privateKeyPem = process.env.JWT_PRIVATE_KEY || "";
+const publicKeyPem = process.env.JWT_PUBLIC_KEY || "";
 
 export const generateToken = async (payload: SessionPayload) => {
     const privateKey = await importPKCS8(privateKeyPem, "RS256");
