@@ -1,17 +1,12 @@
 import { jwtVerify, importSPKI } from "jose";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 type SessionPayload = {
     id: string | number;
     expiresAt: Date;
 };
 
-// Load public key for verification only
-const publicKeyPem = readFileSync(
-    join(process.cwd(), "public_key.pem"),
-    "utf8"
-);
+// Use environment variable for public key
+const publicKeyPem = process.env.JWT_PUBLIC_KEY || "";
 
 export const verifyToken = async (
     session: string | undefined = ""
