@@ -102,13 +102,14 @@
 // });
 
 import { PrismaClient } from "./generated/prisma/index.js";
+import { randomUUID } from "crypto";
 
 const prisma = new PrismaClient();
 
 async function main() {
     await prisma.clients.create({
         data: {
-            id: "client1",
+            id: randomUUID(),
             company_name: "shotown",
             country: "USA",
             total_spent: 3000.24,
@@ -116,7 +117,7 @@ async function main() {
             jobs: {
                 create: [
                     {
-                        id: "job_301",
+                        id: randomUUID(),
                         title: "Fullstack Developer",
                         description: "Build and maintain fullstack web apps.",
                         skills: ["React", "Node.js"],
@@ -129,7 +130,7 @@ async function main() {
                         user_id: null, // Optional
                     },
                     {
-                        id: "job_302",
+                        id: randomUUID(),
                         title: "UX/UI Designer",
                         description: "Redesign our SaaS product interface.",
                         skills: ["Figma", "UX Research"],
