@@ -30,6 +30,10 @@ import "dotenv/config";
 const yoga = createYoga({
     graphqlEndpoint: "/",
     schema,
+    cors: {
+        origin: process.env.FRONTEND_URL || "*",
+        credentials: true,
+    },
     context: (req) => {
         return { req };
     },
