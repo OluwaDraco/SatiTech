@@ -2,11 +2,11 @@ import { writeFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import { printSchema } from "graphql";
-import { builder } from "../utils/builder";
-import "./users";
-import "./jobs";
-import "./clients";
-import "./sati_users";
+import { builder } from "../utils/builder.js";
+import "./users.js";
+import "./jobs.js";
+import "./clients.js";
+import "./sati_users.js";
 
 // Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
