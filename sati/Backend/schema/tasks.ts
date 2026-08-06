@@ -1,5 +1,5 @@
-import { builder } from "../utils/builder";
-import { prisma } from "../utils/db";
+import { builder } from "../utils/builder.js";
+import { prisma } from "../utils/db.js";
 builder.prismaObject("Task", {
     fields: (t) => ({
         id: t.exposeID("id"),

@@ -1,5 +1,5 @@
-import { builder } from "../utils/builder";
-import { prisma } from "../utils/db";
+import { builder } from "../utils/builder.js";
+import { prisma } from "../utils/db.js";
 
 builder.prismaObject("sati_users", {
     fields: (t) => ({
@@ -22,5 +22,5 @@ builder.queryField("user", (t) =>
                 where: { id: args.id },
             });
         },
-    })
+    }),
 );

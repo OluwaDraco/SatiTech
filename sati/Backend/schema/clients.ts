@@ -1,5 +1,4 @@
-import { builder } from "../utils/builder";
-import { prisma } from "../utils/db";
+import { builder } from "../utils/builder.js";
 
 builder.queryType({
     description: "The query root type.",

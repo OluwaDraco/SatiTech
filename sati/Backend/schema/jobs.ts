@@ -1,5 +1,5 @@
-import { builder } from "../utils/builder";
-import { prisma } from "../utils/db";
+import { builder } from "../utils/builder.js";
+import { prisma } from "../utils/db.js";
 
 builder.queryType({
     description: "The query root type.",
@@ -48,5 +48,5 @@ builder.queryField("jobByID", (t) =>
                 where: { id: args.id },
             });
         },
-    })
+    }),
 );

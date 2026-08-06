@@ -1,11 +1,9 @@
-import { builder } from "../utils/builder";
-import type PrismaTypes from "../prisma/generated.d.ts";
-
-import { prisma } from "../utils/db";
-import { comparePassword } from "../utils/bcrypt";
-import { generateToken, verifyToken } from "../utils/jwt";
-import { hashPassword } from "../utils/bcrypt";
-import { Prisma, Users as UserType } from "../generated/prisma";
+import { builder } from "../utils/builder.js";
+import { prisma } from "../utils/db.js";
+import { comparePassword } from "../utils/bcrypt.js";
+import { generateToken } from "../utils/jwt.js";
+import { hashPassword } from "../utils/bcrypt.js";
+import { Users as UserType } from "../generated/prisma/index.js";
 
 interface AuthPayload {
     token: string;
