@@ -1,31 +1,7 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { typeDefs } from "./graphql/schema";
-import { resolvers } from "./graphql/resolvers";
 import { createYoga } from "graphql-yoga";
 import { createServer } from "http";
-import { schema } from "./schema/index";
+import { schema } from "./schema/index.js";
 import "dotenv/config";
-
-// export const con = new Pool({
-//     host: "localhost",
-//     user: "shola",
-//     port: 5432,
-//     // change to env file
-//     password: "shola1",
-//     database: "upwork_data",
-// });
-
-// con.connect().then(() => console.log("connected"));
-// const server = new ApolloServer({
-//     typeDefs,
-//     resolvers,
-// });
-// const { url } = await startStandaloneServer(server, {
-//     listen: { port: 4000 },
-// });
-
-// console.log(`🚀  Server ready at: ${url}`);
 
 const yoga = createYoga({
     graphqlEndpoint: "/",
@@ -46,6 +22,5 @@ const port = process.env.PORT || 4000;
 server.listen(port, () => {
     console.log(`\
 🚀 Server ready at: http://127.0.0.1:${port}
-⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
   `);
 });
