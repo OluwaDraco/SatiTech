@@ -18,11 +18,14 @@ type SessionPayload = {
 };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const privateKeyPem = readFileSync(
-    join(__dirname, "../private_key.pem"),
-    "utf8"
-);
-const publicKeyPem = readFileSync(join(__dirname, "../public_key.pem"), "utf8");
+
+const privateKeyPem =
+    process.env.PRIVATE_KEY ??
+    readFileSync(join(__dirname, "../private_key.pem"), "utf8");
+
+const publicKeyPem =
+    process.env.PUBLIC_KEY ??
+    readFileSync(join(__dirname, "../public_key.pem"), "utf8");
 
 export const generateToken = async (payload: SessionPayload) => {
     const privateKey = await importPKCS8(privateKeyPem, "RS256");
@@ -35,7 +38,7 @@ export const generateToken = async (payload: SessionPayload) => {
 };
 
 export const verifyToken = async (
-    session: string | undefined = ""
+    session: string | undefined = "",
 ): Promise<SessionPayload | null> => {
     try {
         const publicKey = await importSPKI(publicKeyPem, "RS256");
