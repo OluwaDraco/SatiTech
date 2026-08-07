@@ -1,17 +1,28 @@
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { verifyToken } from "../../../lib/jwt";
 
 export async function GET(req: NextRequest) {
-    const token = req.cookies.get("session")?.value;
-    // if (!token) return NextResponse.json({ valid: false }, { status: 401 });
-    // console.log(token);
+    try {
+        const token = req.cookies.get("session")?.value;
+        console.log("Verify API - token exists:", !!token);
 
-    const session = await verifyToken(token);
-    if (!session?.id) {
-        return NextResponse.json({ valid: false }, { status: 401 });
+        if (!token) {
+            return NextResponse.json({ valid: false }, { status: 401 });
+        }
+
+        const session = await verifyToken(token);
+        console.log("Verify API - session:", session);
+
+        if (!session?.id) {
+            return NextResponse.json({ valid: false }, { status: 401 });
+        }
+
+        return NextResponse.json({ valid: true, session });
+    } catch (error) {
+        console.error("Verify API error:", error);
+        return NextResponse.json({ valid: false, error: String(error) }, { status: 500 });
     }
-
-    return NextResponse.json({ valid: true, session });
 }
