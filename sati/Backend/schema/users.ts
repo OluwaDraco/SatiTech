@@ -58,7 +58,7 @@ builder.prismaObject("Users", {
         rate: t.field({
             type: "Float",
             nullable: true,
-            resolve: (users) => users.rate?.toNumber(),
+            resolve: (users: UserType) => users.rate?.toNumber(),
         }),
         location: t.exposeString("location", { nullable: true }),
         overview: t.exposeString("overview"),

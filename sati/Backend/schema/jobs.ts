@@ -1,11 +1,12 @@
 import { builder } from "../utils/builder.js";
 import { prisma } from "../utils/db.js";
+import { Job } from "../generated/prisma/index.js";
 
 builder.queryType({
     description: "The query root type.",
 });
 
-builder.prismaObject("Jobs", {
+builder.prismaObject("Job", {
     fields: (t) => ({
         id: t.exposeID("id"),
         title: t.exposeString("title", { nullable: true }),
@@ -15,7 +16,7 @@ builder.prismaObject("Jobs", {
         budget: t.field({
             type: "Float",
             nullable: true,
-            resolve: (job) => job.budget?.toNumber(),
+            resolve: (job: Job) => job.budget?.toNumber(),
         }),
         duration: t.exposeString("duration", { nullable: true }),
         workload: t.exposeString("workload", { nullable: true }),
@@ -26,7 +27,7 @@ builder.prismaObject("Jobs", {
         rate: t.field({
             type: "Float",
             nullable: true,
-            resolve: (job) => job.rate?.toNumber(),
+            resolve: (job: Job) => job.rate?.toNumber(),
         }),
         user_id: t.exposeString("user_id", { nullable: true }),
         client_id: t.exposeString("client_id", { nullable: true }),
@@ -37,7 +38,7 @@ builder.prismaObject("Jobs", {
 
 builder.queryField("jobByID", (t) =>
     t.prismaField({
-        type: "Jobs",
+        type: "Job",
         nullable: true,
         args: {
             id: t.arg.string({ required: true }),
