@@ -6,7 +6,7 @@ type SessionPayload = {
 };
 
 // Use environment variable for public key
-const publicKeyPem = process.env.JWT_PUBLIC_KEY || "";
+const publicKeyPem = process.env.PUBLIC_KEY || "";
 
 export const verifyToken = async (
     session: string | undefined = ""
