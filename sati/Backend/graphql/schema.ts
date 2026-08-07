@@ -6,7 +6,7 @@ import SchemaBuilder from "@pothos/core";
 export const typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
-  type Jobs {
+  type Job {
     id:          String    
   title:       String
   description: String
@@ -45,7 +45,7 @@ export const typeDefs = `#graphql
   profile_url: String
   reviews:     [String]
   password:    String
-  jobs:        [Jobs]
+  jobs:        [Job]
   tasks: [Task]    
   }
 
@@ -53,7 +53,7 @@ export const typeDefs = `#graphql
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
-    jobs: [Jobs]!
+    jobs: [Job]!
     users: [Users!]!
     task: [Task]!
   }

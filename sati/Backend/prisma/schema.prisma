@@ -40,7 +40,7 @@ model Job {
   users       Users?    @relation("UserJobs", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   task        Task[]    @relation("JobTasks")
 
-  @@map("jobs")
+  @@map("job")
 }
 
 model Task{
