@@ -7,6 +7,7 @@ import "./users.js";
 import "./jobs.js";
 import "./clients.js";
 import "./sati_users.js";
+import "./tasks.js";
 
 // Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -20,4 +21,3 @@ try {
 } catch (err) {
     console.error("❌ Failed to write schema:", err);
 }
-import "./tasks.js";
