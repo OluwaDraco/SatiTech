@@ -50,7 +50,7 @@ builder.objectType("SignupPayload", {
 });
 
 builder.prismaObject("Users", {
-    name: "User",
+    name: "Users",
     fields: (t) => ({
         id: t.exposeID("id"),
         full_name: t.exposeString("full_name"),
