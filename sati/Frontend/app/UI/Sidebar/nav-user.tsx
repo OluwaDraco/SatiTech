@@ -32,6 +32,12 @@ export function NavUser({ userData }: { userData }) {
     const handleClick = () => {
         logOut();
     };
+
+    // Handle null/undefined userData
+    if (!userData || !userData.user) {
+        return null;
+    }
+
     console.log(userData.user.full_name);
     const userInitials = (userName: string) => {
         let name = userName

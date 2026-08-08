@@ -16,9 +16,14 @@ export default async function Layout({
 }) {
     const user = cookies().get("session")?.value;
     const userData = user ? await currentUser(user) : null;
-    console.log(userData);
+    console.log("Session userData:", userData);
+
     const propData = userData?.id ? await getUserById(userData.id as string) : null;
-    console.log(propData);
+    console.log("getUserById result:", propData);
+
+    if (propData && !propData.success) {
+        console.error("getUserById failed:", propData.error);
+    }
 
     return (
         <SidebarProvider>
